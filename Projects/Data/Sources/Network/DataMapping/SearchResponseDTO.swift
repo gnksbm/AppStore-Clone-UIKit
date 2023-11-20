@@ -15,7 +15,7 @@ struct SearchResponseDTO: Codable {
 }
 
 extension SearchResponseDTO {
-//    func toDomain() -> [ApplicationData] {
-//        results.map { .init(appName: $0.trackName) }
-//    }
+    func toDomain() -> [ApplicationData] {
+        results.map { .init(appName: $0.trackName) }
+    }
 }

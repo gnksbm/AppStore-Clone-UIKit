@@ -7,12 +7,6 @@
 
 import ProjectDescription
 
-public extension SwiftPackageManagerDependencies {
-    enum ThirdPartyLibs: CaseIterable {
-        case rxSwift
-    }
-}
-
 let spm = SwiftPackageManagerDependencies(
     [
         .remote(url: "https://github.com/ReactiveX/RxSwift", requirement: .upToNextMinor(from: "6.0.0")),
@@ -20,7 +14,8 @@ let spm = SwiftPackageManagerDependencies(
 )
 
 let carthage = CarthageDependencies(
-    []
+    [
+    ]
 )
 
 let dependencies = Dependencies(

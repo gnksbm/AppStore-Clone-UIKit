@@ -87,7 +87,7 @@ extension SearchResponseDTO {
     
     enum FormattedPrice: String, Codable {
         case the4400 = "￦4,400"
-        case 무료 = "무료"
+        case free = "무료"
     }
     
     enum Kind: String, Codable {

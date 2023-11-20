@@ -7,11 +7,11 @@
 //
 
 import UIKit
+import RxSwift
 
 final class ApplicationViewController: UIViewController {
     private var dataSource: UICollectionViewDiffableDataSource<Int, String>!
     private var snapshot: NSDiffableDataSourceSnapshot<Int, String>!
-    
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     
     override func viewDidLoad() {

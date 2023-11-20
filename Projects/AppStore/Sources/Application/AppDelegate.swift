@@ -25,7 +25,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func setupAppearance() {
-        UITabBar.appearance().tintColor = AppAsset.accentColor.color
+        UITabBar.appearance().tintColor = AppStoreAsset.accentColor.color
         UITabBar.appearance().isTranslucent = true
     }
 }

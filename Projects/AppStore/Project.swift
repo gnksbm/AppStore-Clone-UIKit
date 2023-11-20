@@ -2,10 +2,11 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 
 let project = Project.module(
-    name: "App",
+    name: .appName,
     productKind: .app,
     resources: ["Resources/**"],
     dependencies: [
-        .Project.thirdPartyLibs.dependency
+        .Project.thirdPartyLibs.dependency,
+        .Project.data.dependency,
     ]
 )

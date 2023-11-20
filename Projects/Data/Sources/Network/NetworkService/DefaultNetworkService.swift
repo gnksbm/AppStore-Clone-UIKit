@@ -9,19 +9,19 @@
 import Foundation
 
 final class DefaultNetworkService: NetworkService {
-    func request(endPoint: EndPoint) async -> Result<Data, NetworkError> {
+    func request(endPoint: EndPoint) async -> Result<Data, Error> {
         guard let urlRequest = endPoint.toURLRequest() else {
-            return .failure(.invalidURL)
+            return .failure(NetworkError.invalidURL)
         }
         do {
             let (data, response) = try await URLSession.shared.data(for: urlRequest)
             guard let httpResponse = response as? HTTPURLResponse,
                   200..<300 ~= httpResponse.statusCode else {
-                return .failure(.invalidStatusCode)
+                return .failure(NetworkError.invalidStatusCode)
             }
             return .success(data)
         } catch {
-            return .failure(.transportError(error))
+            return .failure(NetworkError.transportError(error))
         }
     }
 }

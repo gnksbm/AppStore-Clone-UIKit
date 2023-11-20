@@ -9,5 +9,5 @@
 import Foundation
 
 protocol NetworkService {
-    func request(endPoint: EndPoint) async -> Result<Data, NetworkError>
+    func request(endPoint: EndPoint) async -> Result<Data, Error>
 }

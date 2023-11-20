@@ -8,6 +8,10 @@
 
 import Foundation
 
-struct ApplicationData {
+public struct ApplicationData {
     let appName: String
+    
+    public init(appName: String) {
+        self.appName = appName
+    }
 }

@@ -9,15 +9,15 @@
 import Foundation
 import Domain
 
-//final class DefaultApplicationRepository: ApplicationRepository {
-//    private let networkService: NetworkService
-//    
-//    init(networkService: NetworkService) {
-//        self.networkService = networkService
-//    }
-//    
-//    func searchApp(query: SearchQuery) async -> Result<Data, NetworkError> {
-//        let endPoint = SearchEndPoint(query: query)
-//        return await networkService.request(endPoint: endPoint)
-//    }
-//}
+final class DefaultApplicationRepository: ApplicationRepository {
+    private let networkService: NetworkService
+    
+    init(networkService: NetworkService) {
+        self.networkService = networkService
+    }
+    
+    func searchApp(query: SearchQuery) async -> Result<Data, Error> {
+        let endPoint = SearchEndPoint(query: query)
+        return await networkService.request(endPoint: endPoint)
+    }
+}

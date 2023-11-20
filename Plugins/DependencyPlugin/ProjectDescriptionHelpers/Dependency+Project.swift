@@ -14,7 +14,7 @@ public extension TargetDependency {
         public var dependency: TargetDependency {
             switch self {
             case .app:
-                return TargetDependency.projectDependency(name: "App")
+                return TargetDependency.projectDependency(name: "AppStore")
             case .domain:
                 return TargetDependency.projectDependency(name: "Domain")
             case .data:

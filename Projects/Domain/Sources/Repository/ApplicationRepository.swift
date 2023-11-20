@@ -8,6 +8,6 @@
 
 import Foundation
 
-protocol ApplicationRepository {
+public protocol ApplicationRepository {
     func searchApp(query: SearchQuery) async -> Result<Data, Error>
 }

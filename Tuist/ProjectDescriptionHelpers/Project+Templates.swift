@@ -45,7 +45,7 @@ extension Project {
             sources: ["Sources/**"],
             resources: resources,
 //            entitlements: <#T##Path?#>,
-//            scripts: [.swiftLint],
+            scripts: [.swiftLint],
             dependencies: dependencies,
             settings: .secret
         )
