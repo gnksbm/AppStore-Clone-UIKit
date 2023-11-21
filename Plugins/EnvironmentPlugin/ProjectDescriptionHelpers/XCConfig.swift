@@ -8,8 +8,11 @@
 import ProjectDescription
 
 public extension Settings {
-    static let secret: Self = .settings(configurations: [
-        .debug(name: "Debug", xcconfig: .relativeToRoot("Config/Secrets.xcconfig")),
-        .release(name: "Release", xcconfig: .relativeToRoot("Config/Secrets.xcconfig")),
-    ])
+    static let secret: Self = .settings(
+        configurations: [
+            .debug(name: .debug, xcconfig: .relativeToRoot("Config/Secrets.xcconfig")),
+            .release(name: .release, xcconfig: .relativeToRoot("Config/Secrets.xcconfig")),
+        ],
+        defaultSettings: .recommended
+    )
 }

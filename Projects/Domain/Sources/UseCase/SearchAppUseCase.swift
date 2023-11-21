@@ -7,7 +7,8 @@
 //
 
 import Foundation
+import RxSwift
 
-protocol SearchAppUseCase {
-//    func searchApp(query: SearchQuery) async -> Result<[ApplicationData], NetworkError>
+public protocol SearchAppUseCase {
+    func searchApp(query: SearchQuery) async -> Observable<[ApplicationData]>
 }

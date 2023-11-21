@@ -8,10 +8,10 @@
 import ProjectDescription
 
 let config = Config(
+    compatibleXcodeVersions: .all,
     plugins: [
         .local(path: .relativeToRoot("Plugins/EnvironmentPlugin")),
         .local(path: .relativeToRoot("Plugins/DependencyPlugin")),
     ],
     generationOptions: .options()
 )
-

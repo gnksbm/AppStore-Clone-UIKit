@@ -12,7 +12,7 @@ public struct SearchQuery {
     public let term: String
     public let limit: Int
     
-    init(term: String, limit: Int = 5) {
+    public init(term: String, limit: Int = 5) {
         self.term = term
         self.limit = limit
     }

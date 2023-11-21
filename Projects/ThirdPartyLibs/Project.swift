@@ -11,6 +11,7 @@ import ProjectDescriptionHelpers
 let project = Project.module(
     name: "ThirdPartyLibs",
     dependencies: [
-        .SPM.rxSwift.external
+        .SPM.rxSwift.external,
+        .SPM.rxCocoa.external,
     ]
 )

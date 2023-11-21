@@ -8,7 +8,17 @@
 
 import Foundation
 import RxSwift
+import Domain
 
 class TodayViewModel: ViewModel {
+    private var useCase: SearchAppUseCase
     private var disposeBag = DisposeBag()
+    
+    init(useCase: SearchAppUseCase) {
+        self.useCase = useCase
+    }
+    
+    func excute(term: String) async {
+        let result = await useCase.searchApp(query: SearchQuery(term: term))
+    }
 }

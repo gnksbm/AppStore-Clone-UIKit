@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RxSwift
 
 final class DefaultSearchAppUseCase: SearchAppUseCase {
     private let repository: ApplicationRepository
@@ -15,18 +16,13 @@ final class DefaultSearchAppUseCase: SearchAppUseCase {
         self.repository = repository
     }
     
-//    func searchApp(query: SearchQuery) async -> Result<[ApplicationData], NetworkError> {
-//        let result = await repository.searchApp(query: query)
-//        switch result {
-//        case .success(let data):
-//            do {
-//                let dto = try JSONDecoder().decode(SearchResponseDTO.self, from: data)
-//                return .success(dto.toDomain())
-//            } catch {
-//                return .failure(.parseError)
-//            }
-//        case .failure(let error):
-//            return .failure(error)
-//        }
-//    }
+    func searchApp(query: SearchQuery) async -> Observable<[ApplicationData]> {
+        let result = await repository.searchApp(query: query)
+        switch result {
+        case .success(let appData):
+            return Observable.just(appData)
+        case .failure:
+            return Observable.just([])
+        }
+    }
 }

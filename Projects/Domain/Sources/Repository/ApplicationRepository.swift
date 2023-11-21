@@ -9,5 +9,5 @@
 import Foundation
 
 public protocol ApplicationRepository {
-    func searchApp(query: SearchQuery) async -> Result<Data, Error>
+    func searchApp(query: SearchQuery) async -> Result<[ApplicationData], Error>
 }

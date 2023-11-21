@@ -9,12 +9,14 @@ import ProjectDescription
 
 public extension TargetDependency {
     enum SPM {
-        case rxSwift
+        case rxSwift, rxCocoa
         
         public var external: TargetDependency {
             switch self {
-            case .rxSwift:
+            case .rxCocoa:
                 return TargetDependency.external(name: "RxSwift")
+            case .rxSwift:
+                return TargetDependency.external(name: "RxCocoa")
             }
         }
     }

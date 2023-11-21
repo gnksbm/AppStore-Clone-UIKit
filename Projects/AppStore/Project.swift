@@ -6,7 +6,6 @@ let project = Project.module(
     productKind: .app,
     resources: ["Resources/**"],
     dependencies: [
-        .Project.thirdPartyLibs.dependency,
         .Project.data.dependency,
     ]
 )

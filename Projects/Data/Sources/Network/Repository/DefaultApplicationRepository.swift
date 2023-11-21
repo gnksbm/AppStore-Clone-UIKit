@@ -16,8 +16,19 @@ final class DefaultApplicationRepository: ApplicationRepository {
         self.networkService = networkService
     }
     
-    func searchApp(query: SearchQuery) async -> Result<Data, Error> {
+    func searchApp(query: SearchQuery) async -> Result<[ApplicationData], Error> {
         let endPoint = SearchEndPoint(query: query)
-        return await networkService.request(endPoint: endPoint)
+        let result = await networkService.request(endPoint: endPoint)
+        switch result {
+        case .success(let data):
+            do {
+                let dto = try JSONDecoder().decode(SearchResponseDTO.self, from: data)
+                return .success(dto.toDomain())
+            } catch {
+                return .failure(NetworkError.parseError)
+            }
+        case .failure(let error):
+            return .failure(NetworkError.transportError(error))
+        }
     }
 }

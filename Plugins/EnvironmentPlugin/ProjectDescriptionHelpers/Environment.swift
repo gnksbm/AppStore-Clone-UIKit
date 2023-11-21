@@ -10,7 +10,8 @@ import ProjectDescription
 public extension String {
     static let appName = "AppStore"
     static let organizationName = "https://github.com/gnksbm/Clone_AppStore"
-    static let bundleIDPrefix = "com.clone.appstore"
+    static let bundleIDPrefix = "com.clone."
+//    static let bundleIDPrefix = "com.clone" + ".\(appName)"
 }
 
 public extension Platform {
@@ -20,6 +21,7 @@ public extension Platform {
 public extension DeploymentTarget {
     static let current: Self = .iOS(
         targetVersion: "16.0",
-        devices: [.iphone]
+        devices: [.iphone],
+        supportsMacDesignedForIOS: false
     )
 }
