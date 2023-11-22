@@ -14,11 +14,14 @@ class TodayViewModel: ViewModel {
     private var useCase: SearchAppUseCase
     private var disposeBag = DisposeBag()
     
+    struct Input { }
+    struct Output { }
+    
     init(useCase: SearchAppUseCase) {
         self.useCase = useCase
     }
     
-    func excute(term: String) async {
-        let result = await useCase.searchApp(query: SearchQuery(term: term))
+    func transform(input: Input) -> Output {
+        return Output()
     }
 }

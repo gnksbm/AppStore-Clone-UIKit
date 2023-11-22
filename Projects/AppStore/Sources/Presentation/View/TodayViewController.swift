@@ -11,23 +11,23 @@ import UIKit
 final class TodayViewController: UIViewController {
     private var dataSource: UICollectionViewDiffableDataSource<Int, String>!
     private var snapshot: NSDiffableDataSourceSnapshot<Int, String>!
-
-    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     
+    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
     }
+    
     private func configureUI() {
-//        [].forEach {
-//            <#view#>.addSubview($0)
-//            $0.translatesAutoresizingMaskIntoConstraints = false
-//        }
-//        
-//        let safeArea = <#view#>.safeAreaLayoutGuide
-//        
-//        NSLayoutConstraint.activate([
-//        ])
+        //        [].forEach {
+        //            <#view#>.addSubview($0)
+        //            $0.translatesAutoresizingMaskIntoConstraints = false
+        //        }
+        //
+        //        let safeArea = <#view#>.safeAreaLayoutGuide
+        //
+        //        NSLayoutConstraint.activate([
+        //        ])
     }
 }
 
@@ -35,7 +35,7 @@ final class TodayViewController: UIViewController {
 import SwiftUI
 struct TodayViewController_Preview: PreviewProvider {
     static var previews: some View {
-        UIKitPreview()
+        UIKitPreview(TodayViewController())
     }
 }
 #endif

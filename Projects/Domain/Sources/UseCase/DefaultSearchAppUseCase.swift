@@ -9,20 +9,20 @@
 import Foundation
 import RxSwift
 
-final class DefaultSearchAppUseCase: SearchAppUseCase {
+public final class DefaultSearchAppUseCase: SearchAppUseCase {
     private let repository: ApplicationRepository
     
-    init(repository: ApplicationRepository) {
+    public init(repository: ApplicationRepository) {
         self.repository = repository
     }
     
-    func searchApp(query: SearchQuery) async -> Observable<[ApplicationData]> {
+    public func searchApp(query: SearchQuery) async -> Observable<[ApplicationData]> {
         let result = await repository.searchApp(query: query)
         switch result {
         case .success(let appData):
             return Observable.just(appData)
-        case .failure:
-            return Observable.just([])
+        case .failure(let error):
+            return .error(error)
         }
     }
 }

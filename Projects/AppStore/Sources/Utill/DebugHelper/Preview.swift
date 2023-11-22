@@ -9,10 +9,16 @@
 import SwiftUI
 #if DEBUG
 struct UIKitPreview: UIViewControllerRepresentable {
+    let viewController: UIViewController
+    
+    init(_ viewController: UIViewController) {
+        self.viewController = viewController
+    }
     func makeUIViewController(context: Context) -> some UINavigationController {
-        let coordinator = AppCoordinator(navigationController: .init())
-        coordinator.start()
-        return coordinator.navigationController
+//        let coordinator = AppCoordinator(navigationController: .init())
+//        coordinator.start()
+//        return coordinator.navigationController
+        return UINavigationController(rootViewController: viewController)
     }
     
     func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) { }

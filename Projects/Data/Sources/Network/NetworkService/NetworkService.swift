@@ -8,6 +8,6 @@
 
 import Foundation
 
-protocol NetworkService {
+public protocol NetworkService {
     func request(endPoint: EndPoint) async -> Result<Data, Error>
 }

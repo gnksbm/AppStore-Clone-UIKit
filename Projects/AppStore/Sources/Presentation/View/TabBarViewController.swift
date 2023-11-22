@@ -18,7 +18,7 @@ class TabBarViewController: UITabBarController {
 import SwiftUI
 struct TabBarViewController_Preview: PreviewProvider {
     static var previews: some View {
-        UIKitPreview()
+        UIKitPreview(TabBarViewController())
     }
 }
 #endif

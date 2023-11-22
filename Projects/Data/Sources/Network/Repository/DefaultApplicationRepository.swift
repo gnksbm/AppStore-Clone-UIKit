@@ -9,14 +9,14 @@
 import Foundation
 import Domain
 
-final class DefaultApplicationRepository: ApplicationRepository {
+public final class DefaultApplicationRepository: ApplicationRepository {
     private let networkService: NetworkService
     
-    init(networkService: NetworkService) {
+    public init(networkService: NetworkService) {
         self.networkService = networkService
     }
     
-    func searchApp(query: SearchQuery) async -> Result<[ApplicationData], Error> {
+    public func searchApp(query: SearchQuery) async -> Result<[ApplicationData], Error> {
         let endPoint = SearchEndPoint(query: query)
         let result = await networkService.request(endPoint: endPoint)
         switch result {

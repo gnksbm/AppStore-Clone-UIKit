@@ -23,7 +23,7 @@ final class ApplicationViewController: UIViewController {
 import SwiftUI
 struct ApplicationViewController_Preview: PreviewProvider {
     static var previews: some View {
-        UIKitPreview()
+        UIKitPreview(ApplicationViewController())
     }
 }
 #endif

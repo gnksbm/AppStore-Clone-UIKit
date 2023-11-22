@@ -23,7 +23,7 @@ final class GameViewController: UIViewController {
 import SwiftUI
 struct GameViewController_Preview: PreviewProvider {
     static var previews: some View {
-        UIKitPreview()
+        UIKitPreview(GameViewController())
     }
 }
 #endif

@@ -15,10 +15,7 @@ struct SearchEndPoint: EndPoint {
     }
     
     var header: [String: String] {
-        [
-            "country": "kr",
-            "entity": "software",
-        ]
+        [:]
     }
     
     var path: String {
@@ -33,6 +30,8 @@ struct SearchEndPoint: EndPoint {
     
     init(query: SearchQuery) {
         self.queryParameter = [
+            "country": "kr",
+            "entity": "software",
             "term": query.term,
             "limit": String(query.limit)
         ]

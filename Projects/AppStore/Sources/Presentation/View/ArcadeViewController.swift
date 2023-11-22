@@ -23,7 +23,7 @@ final class ArcadeViewController: UIViewController {
 import SwiftUI
 struct ArcadeViewController_Preview: PreviewProvider {
     static var previews: some View {
-        UIKitPreview()
+        UIKitPreview(ArcadeViewController())
     }
 }
 #endif
