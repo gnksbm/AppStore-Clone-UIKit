@@ -11,6 +11,8 @@ import Foundation
 final class DIContainer {
     static var storage: [String: Any] = [:]
     
+    private init() { }
+    
     static func register<T>(type: T.Type, _ object: T) {
         storage["\(type)"] = object
     }
