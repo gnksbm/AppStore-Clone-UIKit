@@ -10,8 +10,8 @@ import ProjectDescription
 public extension String {
     static let appName = "AppStore"
     static let organizationName = "https://github.com/gnksbm/Clone_AppStore"
-    static let bundleIDPrefix = "com.clone."
-//    static let bundleIDPrefix = "com.clone" + ".\(appName)"
+//    static let bundleIDPrefix = "com.clone."
+    static let bundleIDPrefix = "com.clone" + ".\(appName)"
 }
 
 public extension Platform {

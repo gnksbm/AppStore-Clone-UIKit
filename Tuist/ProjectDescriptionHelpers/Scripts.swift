@@ -13,4 +13,9 @@ public extension TargetScript {
         name: "SwiftLintShell",
         basedOnDependencyAnalysis: false
     )
+    static let featureSwiftLint = TargetScript.pre(
+        path: .relativeToRoot("Scripts/FeatureSwiftLintRunScript.sh"),
+        name: "SwiftLintShell",
+        basedOnDependencyAnalysis: false
+    )
 }

@@ -8,6 +8,6 @@ import ProjectDescriptionHelpers
 let project = Project.module(
     name: "Domain",
     dependencies: [
-        .Project.thirdPartyLibs.dependency,
+        .core,
     ]
 )

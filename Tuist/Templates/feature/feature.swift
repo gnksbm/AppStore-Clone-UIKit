@@ -16,10 +16,11 @@ private let template = Template(
     ],
     items: [
         .file(path: projectPath(with: "Project.swift"), templatePath: "project.stencil"),
+        .file(path: projectPath(with: "Tests/\(nameAttribute)Tests.swift"), templatePath: "project.stencil"),
         .string(path: projectPath(with: "Sources/Temp.swift"), contents: "// ")
     ]
 )
 
 private func projectPath(with: String) -> String {
-    "Projects/\(nameAttribute)/" + with
+    "Projects/Feature/\(nameAttribute)/" + with
 }

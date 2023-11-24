@@ -2,11 +2,9 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 
 let project = Project.module(
-    name: .appName,
-    productKind: .app,
-    resources: ["Resources/**"],
+    name: "FeatureDependency",
     dependencies: [
-        .data,
-        .baseTabFeature,
+        .domain,
+        .designSystem
     ]
 )

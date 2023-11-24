@@ -1,9 +1,9 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let project = Project.module(
-    name: "Data",
+let project = Project.feature(
+    name: "GameFeature",
     dependencies: [
-        .domain
+        .featureDependency
     ]
 )
