@@ -20,6 +20,6 @@ private let template = Template(
     ]
 )
 
-private func projectPath(with: String) -> String {
-    "Projects/\(nameAttribute)/" + with
+private func projectPath(with name: String) -> String {
+    "Projects/\(nameAttribute)/\(name)"
 }

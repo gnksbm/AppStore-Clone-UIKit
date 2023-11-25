@@ -1,15 +1,8 @@
-//
-//  TodayViewController.swift
-//  AppStore
-//
-//  Created by gnksbm on 2023/11/15.
-//  Copyright © 2023 https://github.com/gnksbm/Clone_AppStore. All rights reserved.
-//
-
 import UIKit
 import RxSwift
 
-final class TodayViewController: UIViewController {
+public final class TodayViewController: UIViewController {
+    private let viewModel: TodayViewModel
     private var dataSource: UICollectionViewDiffableDataSource<TodaySection, String>!
     private var snapshot: NSDiffableDataSourceSnapshot<TodaySection, String>!
     
@@ -18,7 +11,16 @@ final class TodayViewController: UIViewController {
         return collectionView
     }()
     
-    override func viewDidLoad() {
+    public init(viewModel: TodayViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    public override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
     }
@@ -107,7 +109,11 @@ import FeatureDependency
 import SwiftUI
 struct TodayViewController_Preview: PreviewProvider {
     static var previews: some View {
-        UIKitPreview(TodayViewController())
+        UIKitPreview(
+            TodayViewController(
+                viewModel: TodayViewModel()
+            )
+        )
     }
 }
 #endif

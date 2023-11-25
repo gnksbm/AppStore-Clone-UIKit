@@ -1,9 +1,18 @@
-import ProjectDescription
-import ProjectDescriptionHelpers
+import XCTest
+@testable import TodayFeature
 
-let project = Project.feature(
-    name: "TodayFeature",
-    dependencies: [
-        .featureDependency
-    ]
-)
+final class TodayFeatureTests: XCTestCase {
+    override func setUpWithError() throws {
+    }
+
+    override func tearDownWithError() throws {
+    }
+
+    func testExample() throws {
+    }
+
+    func testPerformanceExample() throws {
+        self.measure {
+        }
+    }
+}

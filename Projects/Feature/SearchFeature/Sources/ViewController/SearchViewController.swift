@@ -1,16 +1,6 @@
-//
-//  SearchViewController.swift
-//  SearchFeature
-//
-//  Created by gnksbm on 2023/11/17.
-//  Copyright © 2023 https://github.com/gnksbm/Clone_AppStore. All rights reserved.
-//
-
 import UIKit
-import Domain
-import Data
+
 import RxSwift
-import RxCocoa
 
 final class SearchViewController: UIViewController {
     private var dataSource: UICollectionViewDiffableDataSource<Int, String>!
@@ -68,6 +58,8 @@ final class SearchViewController: UIViewController {
 #if DEBUG
 import SwiftUI
 import FeatureDependency
+import Domain
+import Data
 struct SearchViewController_Preview: PreviewProvider {
     static var previews: some View {
         UIKitPreview(

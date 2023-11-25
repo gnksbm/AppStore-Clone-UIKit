@@ -1,8 +1,9 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let project = Project.feature(
-    name: "{{ name }}",
+let project = Project.makeProject(
+    name: "{{ name }}Feature",
+    targetKinds: [.feature],
     dependencies: [
         .featureDependency
     ]

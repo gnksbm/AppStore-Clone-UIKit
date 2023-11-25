@@ -1,7 +1,7 @@
 import XCTest
-@testable import {{ name }}
+@testable import {{ name }}Feature
 
-final class {{ name }}Tests: XCTestCase {
+final class {{ name }}FeatureTests: XCTestCase {
     override func setUpWithError() throws {
     }
 

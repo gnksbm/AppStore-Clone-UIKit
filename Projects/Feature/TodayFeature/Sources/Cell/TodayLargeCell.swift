@@ -1,14 +1,14 @@
 //
-//  LargeCell.swift
-//  TodayFeature
+//  TodayLargeCell.swift
+//  TodayFeatureDemoApp
 //
-//  Created by gnksbm on 2023/11/23.
+//  Created by gnksbm on 2023/11/25.
 //  Copyright © 2023 https://github.com/gnksbm/Clone_AppStore. All rights reserved.
 //
 
 import UIKit
 
-final class TodayLargeCell: UICollectionViewCell {
+public final class TodayLargeCell: UICollectionViewCell {
     let imageView: UIImageView = {
 //        let imgConfig = UIImage.SymbolConfiguration(font: .boldSystemFont(ofSize: <#T##CGFloat#>))
         let imageView = UIImageView()

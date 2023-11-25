@@ -1,9 +1,18 @@
-import ProjectDescription
-import ProjectDescriptionHelpers
+import XCTest
+@testable import GameFeature
 
-let project = Project.feature(
-    name: "GameFeature",
-    dependencies: [
-        .featureDependency
-    ]
-)
+final class GameFeatureTests: XCTestCase {
+    override func setUpWithError() throws {
+    }
+
+    override func tearDownWithError() throws {
+    }
+
+    func testExample() throws {
+    }
+
+    func testPerformanceExample() throws {
+        self.measure {
+        }
+    }
+}

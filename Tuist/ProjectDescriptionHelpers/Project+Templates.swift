@@ -10,6 +10,118 @@ import EnvironmentPlugin
 import DependencyPlugin
 
 extension Project {
+    // MARK: Refact
+    public static func makeProject(
+        name: String,
+        targetKinds: [TargetKind] = [],
+        resources: ResourceFileElements? = nil,
+        dependencies: [TargetDependency]
+    ) -> Self {
+        var targets = [Target]()
+        targets = targetKinds.flatMap {
+            switch $0 {
+            case .app:
+                let app = appTarget(name: name, dependencies: dependencies)
+                return [app]
+            case .framework:
+                let framework = frameworkTarget(name: name, dependencies: dependencies)
+                let test = unitTestTarget(name: name, dependencies: dependencies)
+                return [framework, test]
+            case .feature:
+                let demo = demoAppTarget(name: name, isFeature: true, dependencies: dependencies)
+                let framework = frameworkTarget(name: name, isFeature: true, dependencies: dependencies)
+                let test = unitTestTarget(name: name, dependencies: dependencies)
+                return [demo, framework, test]
+            }
+        }
+        return Project(name: name,
+                organizationName: .organizationName,
+                targets: targets
+        )
+    }
+    
+    private static func appTarget(
+        name: String,
+        isFeature: Bool = false,
+        dependencies: [TargetDependency]
+    ) -> Target {
+        let target: Target = .init(
+            name: name,
+            platform: .iOS,
+            product: .app,
+            bundleId: .bundleIDPrefix,
+            deploymentTarget: .current,
+            infoPlist: .current,
+            sources: ["Sources/**"],
+            resources: ["Resources/**"],
+//            entitlements: <#T##Path?#>,
+            scripts: isFeature ? [.featureSwiftLint] : [.swiftLint],
+            dependencies: dependencies,
+            settings: .secret
+        )
+        return target
+    }
+
+    private static func demoAppTarget(
+        name: String,
+        isFeature: Bool = false,
+        dependencies: [TargetDependency]
+    ) -> Target {
+        let target: Target = .init(
+            name: "\(name)DemoApp",
+            platform: .iOS,
+            product: .app,
+            bundleId: .bundleIDPrefix + ".DemoApp",
+            deploymentTarget: .current,
+            infoPlist: .current,
+            sources: ["Sources/**"],
+//            entitlements: <#T##Path?#>,
+            scripts: isFeature ? [.featureSwiftLint] : [.swiftLint],
+            dependencies: dependencies,
+            settings: .secret
+        )
+        return target
+    }
+
+    private static func frameworkTarget(
+        name: String,
+        isFeature: Bool = false,
+        dependencies: [TargetDependency]
+    ) -> Target {
+        let target: Target = .init(
+            name: name,
+            platform: .iOS,
+            product: .framework,
+            bundleId: .bundleIDPrefix,
+            deploymentTarget: .current,
+            infoPlist: .current,
+            sources: ["Sources/**"],
+//            entitlements: <#T##Path?#>,
+            scripts: isFeature ? [.featureSwiftLint] : [.swiftLint],
+            dependencies: dependencies,
+            settings: .secret
+        )
+        return target
+    }
+    
+    private static func unitTestTarget(
+        name: String,
+        isFeature: Bool = false,
+        dependencies: [TargetDependency]
+    ) -> Target {
+        return Target(
+            name: "\(name)Tests",
+            platform: .iOS,
+            product: .unitTests,
+            bundleId: .bundleIDPrefix + ".\(name)Test",
+            deploymentTarget: .current,
+            infoPlist: .current,
+            sources: ["Tests/**"],
+            scripts: isFeature ? [.featureSwiftLint] : [.swiftLint]
+        )
+    }
+    
+    // MARK: Current
     public static func module(
         name: String,
         productKind: Product = .framework,
@@ -71,187 +183,4 @@ extension Project {
             appTarget
         ]
     }
-//    // MARK: Refact
-//    private static func makeTarget(targetKind: TargetKind,
-//                                   name: String,
-//                                   dependencies: [TargetDependency]) -> [Target] {
-//        switch targetKind {
-//        case .app:
-//            return [
-//                appTarget(name: name, dependencies: dependencies)
-//            ]
-//        case .framework:
-//            return [
-//                frameworkTarget(name: name, dependencies: dependencies),
-//                unitTestTarget(name: name, dependencies: dependencies)
-//            ]
-//        case .feature:
-//            var targets: [Target] = []
-//            let demo = demoAppTarget(
-//                name: name,
-//                isFeature: true,
-//                dependencies: dependencies
-//            )
-//            targets.append(demo)
-//            let framework = frameworkTarget(
-//                name: name,
-//                isFeature: true,
-//                dependencies: dependencies
-//            )
-//            targets.append(framework)
-//            let unitTest = unitTestTarget(
-//                name: name,
-//                isFeature: true,
-//                dependencies: dependencies
-//            )
-//            targets.append(unitTest)
-//            return targets
-//            return [
-//                demoAppTarget(
-//                    name: name,
-//                    isFeature: true,
-//                    dependencies: dependencies
-//                ),
-//                frameworkTarget(
-//                    name: name,
-//                    isFeature: true,
-//                    dependencies: dependencies
-//                ),
-//                unitTestTarget(
-//                    name: name,
-//                    isFeature: true,
-//                    dependencies: dependencies
-//                )
-//            ]
-//        }
-//    }
-//    public static func module(
-//        name: String,
-//        targetKinds: TargetKind,
-//        resources: ResourceFileElements? = nil,
-//        dependencies: [TargetDependency] = []
-//    ) -> Self {
-//        var targets: [Target] = []
-//        targets = {
-//            switch targetKinds {
-//            case .app:
-//                return [
-//                    appTarget(name: name, dependencies: dependencies)
-//                ]
-//            case .framework:
-//                return [
-//                    frameworkTarget(name: name, dependencies: dependencies),
-//                    unitTestTarget(name: name, dependencies: dependencies)
-//                ]
-//            case .feature:
-//                return [
-//                    demoAppTarget(
-//                        name: name,
-//                        isFeature: true,
-//                        dependencies: dependencies
-//                    ),
-//                    frameworkTarget(
-//                        name: name,
-//                        isFeature: true,
-//                        dependencies: dependencies
-//                    ),
-//                    unitTestTarget(
-//                        name: name,
-//                        isFeature: true,
-//                        dependencies: dependencies
-//                    )
-//                ]
-//            }
-//        }()
-//        return Project(name: name,
-//                organizationName: .organizationName,
-//                targets: targets
-//        )
-//    }
-//
-//    private static func appTarget(
-//        name: String,
-//        isFeature: Bool = false,
-//        dependencies: [TargetDependency]
-//    ) -> Target {
-//        let target: Target = .init(
-//            name: name,
-//            platform: .iOS,
-//            product: .app,
-//            bundleId: .bundleIDPrefix,
-//            deploymentTarget: .current,
-//            infoPlist: .current,
-//            sources: ["Sources/**"],
-//            resources: ["Resources/**"],
-////            entitlements: <#T##Path?#>,
-//            scripts: isFeature ? [.swiftLint] : [.featureSwiftLint],
-//            dependencies: dependencies,
-//            settings: .secret
-//        )
-//        return target
-//    }
-//
-//    private static func demoAppTarget(
-//        name: String,
-//        isFeature: Bool = false,
-//        dependencies: [TargetDependency]
-//    ) -> Target {
-//        let target: Target = .init(
-//            name: name,
-//            platform: .iOS,
-//            product: .app,
-//            bundleId: .bundleIDPrefix + ".DemoApp",
-//            deploymentTarget: .current,
-//            infoPlist: .current,
-//            sources: ["Sources/**"],
-//            resources: ["Resources/**"],
-////            entitlements: <#T##Path?#>,
-//            scripts: isFeature ? [.swiftLint] : [.featureSwiftLint],
-//            dependencies: dependencies,
-//            settings: .secret
-//        )
-//        return target
-//    }
-//
-//    private static func frameworkTarget(
-//        name: String,
-//        isFeature: Bool = false,
-//        dependencies: [TargetDependency]
-//    ) -> Target {
-//        let target: Target = .init(
-//            name: name,
-//            platform: .iOS,
-//            product: .framework,
-//            bundleId: .bundleIDPrefix,
-//            deploymentTarget: .current,
-//            infoPlist: .current,
-//            sources: ["Sources/**"],
-////            entitlements: <#T##Path?#>,
-//            scripts: isFeature ? [.swiftLint] : [.featureSwiftLint],
-//            dependencies: dependencies,
-//            settings: .secret
-//        )
-//        return target
-//    }
-//
-//    private static func unitTestTarget(
-//        name: String,
-//        isFeature: Bool = false,
-//        dependencies: [TargetDependency]
-//    ) -> Target {
-//        let target: Target = .init(
-//            name: name,
-//            platform: .iOS,
-//            product: .unitTests,
-//            bundleId: .bundleIDPrefix + ".\(name)Test",
-//            deploymentTarget: .current,
-//            infoPlist: .current,
-//            sources: ["Tests/**"],
-////            entitlements: <#T##Path?#>,
-//            scripts: isFeature ? [.swiftLint] : [.featureSwiftLint],
-//            dependencies: dependencies,
-//            settings: .secret
-//        )
-//        return target
-//    }
 }

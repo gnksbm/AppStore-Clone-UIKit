@@ -1,8 +1,9 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let project = Project.feature(
+let project = Project.makeProject(
     name: "ArcadeFeature",
+    targetKinds: [.feature],
     dependencies: [
         .featureDependency
     ]
