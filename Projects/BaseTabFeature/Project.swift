@@ -1,13 +1,9 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let project = Project.module(
+let project = Project.makeProject(
     name: "BaseTabFeature",
+    targetKinds: .framework,
     dependencies: [
-        .todayFeature,
-        .gameFeature,
-        .applicationFeature,
-        .arcadeFeature,
-        .searchFeature
-    ]
+    ] + .Feature.allCases.map({ $0.dependency })
 )

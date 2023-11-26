@@ -1,12 +1,11 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let project = Project.module(
+let project = Project.makeProject(
     name: .appName,
-    productKind: .app,
-    resources: ["Resources/**"],
+    targetKinds: .app,
     dependencies: [
         .data,
-        .baseTabFeature,
+        .baseTabFeature
     ]
 )

@@ -3,7 +3,8 @@ import ProjectDescriptionHelpers
 
 let project = Project.makeProject(
     name: "GameFeature",
-    targetKinds: [.feature],
+    targetKinds: .feature,
+    isTestable: true,
     dependencies: [
         .featureDependency
     ]

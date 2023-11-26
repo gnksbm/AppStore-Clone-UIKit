@@ -7,7 +7,8 @@
 //
 
 import Foundation
+import RxSwift
 
 public protocol ApplicationRepository {
-    func searchApp(query: SearchQuery) async -> Result<[ApplicationData], Error>
+    func searchApp(query: SearchQuery) async -> Observable<[ApplicationData]>
 }

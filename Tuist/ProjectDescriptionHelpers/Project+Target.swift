@@ -10,3 +10,7 @@ import ProjectDescription
 public enum TargetKind {
     case app, framework, feature
 }
+
+public extension ResourceFileElements {
+    static let resources: Self = ["Resources/**"]
+}

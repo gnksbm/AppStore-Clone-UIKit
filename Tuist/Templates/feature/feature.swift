@@ -17,6 +17,9 @@ private let template = Template(
     items: [
         // MARK: Project.swift
         .file(path: projectPath(with: "Project.swift"), templatePath: "project.stencil"),
+        // MARK: DemoAppDelegate.swift, DemoSceneDelegate.swift
+        .file(path: projectPath(with: "Demo/AppDelegate.swift"), templatePath: "appDelegate.stencil"),
+        .file(path: projectPath(with: "Demo/SceneDelegate.swift"), templatePath: "sceneDelegate.stencil"),
         // MARK: Coordinator, ViewController, ViewModel
         .file(path: projectPath(with: "Sources/ViewModel/\(nameAttribute)ViewModel.swift"), templatePath: "viewModel.stencil"),
         .file(path: projectPath(with: "Sources/ViewController/\(nameAttribute)ViewController.swift"), templatePath: "viewContoller.stencil"),

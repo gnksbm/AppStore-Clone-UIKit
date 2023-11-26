@@ -13,27 +13,45 @@ extension Project {
     // MARK: Refact
     public static func makeProject(
         name: String,
-        targetKinds: [TargetKind] = [],
-        resources: ResourceFileElements? = nil,
+        targetKinds: TargetKind,
+        entitlements: Path? = nil,
+        isTestable: Bool = false,
+        hasResource: Bool = false,
         dependencies: [TargetDependency]
     ) -> Self {
         var targets = [Target]()
-        targets = targetKinds.flatMap {
-            switch $0 {
+        targets = {
+            switch targetKinds {
             case .app:
-                let app = appTarget(name: name, dependencies: dependencies)
-                return [app]
+                var result = [Target]()
+                let app = appTarget(name: name, entitlements: entitlements, dependencies: dependencies)
+                result.append(app)
+                if isTestable {
+                    let test = unitTestTarget(name: name, dependencies: dependencies)
+                    result.append(test)
+                }
+                return result
             case .framework:
-                let framework = frameworkTarget(name: name, dependencies: dependencies)
-                let test = unitTestTarget(name: name, dependencies: dependencies)
-                return [framework, test]
+                var result = [Target]()
+                let framework = frameworkTarget(name: name, entitlements: entitlements, hasResource: hasResource, dependencies: dependencies)
+                result.append(framework)
+                if isTestable {
+                    let test = unitTestTarget(name: name, dependencies: dependencies)
+                    result.append(test)
+                }
+                return result
             case .feature:
-                let demo = demoAppTarget(name: name, isFeature: true, dependencies: dependencies)
-                let framework = frameworkTarget(name: name, isFeature: true, dependencies: dependencies)
-                let test = unitTestTarget(name: name, dependencies: dependencies)
-                return [demo, framework, test]
+                var result = [Target]()
+                let framework = frameworkTarget(name: name, entitlements: entitlements, hasResource: hasResource, isFeature: true, dependencies: dependencies)
+                result.append(framework)
+                let frameworkDependency = TargetDependency.target(framework)
+                let demoApp = demoAppTarget(name: name, entitlements: entitlements, dependencies: [frameworkDependency])
+                result.append(demoApp)
+                let test = unitTestTarget(name: name, isFeature: true, dependencies: dependencies)
+                result.append(test)
+                return result
             }
-        }
+        }()
         return Project(name: name,
                 organizationName: .organizationName,
                 targets: targets
@@ -42,7 +60,7 @@ extension Project {
     
     private static func appTarget(
         name: String,
-        isFeature: Bool = false,
+        entitlements: Path?,
         dependencies: [TargetDependency]
     ) -> Target {
         let target: Target = .init(
@@ -54,8 +72,8 @@ extension Project {
             infoPlist: .current,
             sources: ["Sources/**"],
             resources: ["Resources/**"],
-//            entitlements: <#T##Path?#>,
-            scripts: isFeature ? [.featureSwiftLint] : [.swiftLint],
+            entitlements: entitlements,
+            scripts: [.swiftLint],
             dependencies: dependencies,
             settings: .secret
         )
@@ -64,19 +82,22 @@ extension Project {
 
     private static func demoAppTarget(
         name: String,
-        isFeature: Bool = false,
+        entitlements: Path? = nil,
         dependencies: [TargetDependency]
     ) -> Target {
         let target: Target = .init(
             name: "\(name)DemoApp",
             platform: .iOS,
             product: .app,
-            bundleId: .bundleIDPrefix + ".DemoApp",
+            bundleId: .bundleIDPrefix + ".\(name)DemoApp",
             deploymentTarget: .current,
             infoPlist: .current,
-            sources: ["Sources/**"],
-//            entitlements: <#T##Path?#>,
-            scripts: isFeature ? [.featureSwiftLint] : [.swiftLint],
+            sources: [
+                "Demo/**",
+                "Sources/**"
+            ],
+            entitlements: entitlements,
+            scripts: [.featureSwiftLint],
             dependencies: dependencies,
             settings: .secret
         )
@@ -85,6 +106,8 @@ extension Project {
 
     private static func frameworkTarget(
         name: String,
+        entitlements: Path?,
+        hasResource: Bool,
         isFeature: Bool = false,
         dependencies: [TargetDependency]
     ) -> Target {
@@ -92,11 +115,12 @@ extension Project {
             name: name,
             platform: .iOS,
             product: .framework,
-            bundleId: .bundleIDPrefix,
+            bundleId: .bundleIDPrefix + ".\(name)",
             deploymentTarget: .current,
             infoPlist: .current,
             sources: ["Sources/**"],
-//            entitlements: <#T##Path?#>,
+            resources: hasResource ? .resources : nil,
+            entitlements: entitlements,
             scripts: isFeature ? [.featureSwiftLint] : [.swiftLint],
             dependencies: dependencies,
             settings: .secret
@@ -119,68 +143,5 @@ extension Project {
             sources: ["Tests/**"],
             scripts: isFeature ? [.featureSwiftLint] : [.swiftLint]
         )
-    }
-    
-    // MARK: Current
-    public static func module(
-        name: String,
-        productKind: Product = .framework,
-        resources: ResourceFileElements? = nil,
-        dependencies: [TargetDependency]
-    ) -> Self {
-        Project(name: name,
-                organizationName: .organizationName,
-                targets: makeAppTargets(
-                    name: name,
-                    productKind: productKind,
-                    resources: resources,
-                    dependencies: dependencies
-                )
-        )
-    }
-    
-    public static func feature(
-        name: String,
-        productKind: Product = .framework,
-        resources: ResourceFileElements? = nil,
-        dependencies: [TargetDependency]
-    ) -> Self {
-        Project(name: name,
-                organizationName: .organizationName,
-                targets: makeAppTargets(
-                    name: name,
-                    productKind: productKind,
-                    isFeature: true,
-                    resources: resources,
-                    dependencies: dependencies
-                )
-        )
-    }
-    
-    private static func makeAppTargets(
-        name: String,
-        productKind: Product,
-        isFeature: Bool = false,
-        entitlements: Path? = nil,
-        resources: ResourceFileElements? = nil,
-        dependencies: [TargetDependency]
-    ) -> [Target] {
-        let appTarget: Target = .init(
-            name: name,
-            platform: .iOS,
-            product: productKind,
-            bundleId: productKind == .app ? .bundleIDPrefix : .bundleIDPrefix + "\(name)",
-            deploymentTarget: .current,
-            infoPlist: .current,
-            sources: ["Sources/**"],
-            resources: resources,
-            entitlements: entitlements,
-            scripts: isFeature ? [.featureSwiftLint] : [.swiftLint],
-            dependencies: dependencies,
-            settings: .secret
-        )
-        return [
-            appTarget
-        ]
     }
 }

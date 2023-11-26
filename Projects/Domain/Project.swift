@@ -1,13 +1,10 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-//let project = Project.module(
-//    name: "Domain",
-//    productKind: [.app, .unitTest]
-//)
-let project = Project.module(
+let project = Project.makeProject(
     name: "Domain",
+    targetKinds: .framework,
     dependencies: [
-        .core,
+        .core
     ]
 )

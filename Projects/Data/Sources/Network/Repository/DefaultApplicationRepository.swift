@@ -7,7 +7,10 @@
 //
 
 import Foundation
+
 import Domain
+
+import RxSwift
 
 public final class DefaultApplicationRepository: ApplicationRepository {
     private let networkService: NetworkService
@@ -16,19 +19,34 @@ public final class DefaultApplicationRepository: ApplicationRepository {
         self.networkService = networkService
     }
     
-    public func searchApp(query: SearchQuery) async -> Result<[ApplicationData], Error> {
+//    public func searchApp(query: SearchQuery) async -> Result<[ApplicationData], Error> {
+//        let endPoint = SearchEndPoint(query: query)
+//        let result = await networkService.request(endPoint: endPoint)
+//        switch result {
+//        case .success(let data):
+//            do {
+//                let dto = try JSONDecoder().decode(SearchResponseDTO.self, from: data)
+//                return .success(dto.toDomain())
+//            } catch {
+//                return .failure(NetworkError.parseError)
+//            }
+//        case .failure(let error):
+//            return .failure(NetworkError.transportError(error))
+//        }
+//    }
+    public func searchApp(query: SearchQuery) async -> Observable<[ApplicationData]> {
         let endPoint = SearchEndPoint(query: query)
         let result = await networkService.request(endPoint: endPoint)
         switch result {
         case .success(let data):
             do {
                 let dto = try JSONDecoder().decode(SearchResponseDTO.self, from: data)
-                return .success(dto.toDomain())
+                return .just(dto.toDomain())
             } catch {
-                return .failure(NetworkError.parseError)
+                return .error(NetworkError.parseError)
             }
         case .failure(let error):
-            return .failure(NetworkError.transportError(error))
+            return .error(NetworkError.transportError(error))
         }
     }
 }

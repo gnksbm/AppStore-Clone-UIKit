@@ -8,18 +8,6 @@
 import ProjectDescription
 
 public extension TargetDependency {
-    enum SPM {
-        case rxSwift, rxCocoa
-        
-        public var external: TargetDependency {
-            switch self {
-            case .rxCocoa:
-                return TargetDependency.external(name: "RxSwift")
-            case .rxSwift:
-                return TargetDependency.external(name: "RxCocoa")
-            }
-        }
-    }
-    
-    enum Carthage { }
+    static let rxSwift: Self = .external(name: "RxSwift")
+    static let rxCocoa: Self = .external(name: "RxCocoa")
 }

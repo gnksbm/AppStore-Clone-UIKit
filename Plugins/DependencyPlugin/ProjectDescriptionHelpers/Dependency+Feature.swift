@@ -7,14 +7,27 @@
 
 import ProjectDescription
 
-public extension TargetDependency {
-    static let todayFeature: Self = .featureModule(name: "TodayFeature")
-    static let gameFeature: Self = .featureModule(name: "GameFeature")
-    static let applicationFeature: Self = .featureModule(name: "ApplicationFeature")
-    static let arcadeFeature: Self = .featureModule(name: "ArcadeFeature")
-    static let searchFeature: Self = .featureModule(name: "SearchFeature")
-    
-    private static func featureModule(name: String) -> Self {
-        .project(target: name, path: .relativeToRoot("Projects/Feature/\(name)"))
+public extension Array<TargetDependency> {
+    enum Feature: CaseIterable {
+        case today, game, application, arcade, search
+        
+        public var dependency: TargetDependency {
+            switch self {
+            case .today:
+                return featureModule(name: "TodayFeature")
+            case .game:
+                return featureModule(name: "GameFeature")
+            case .application:
+                return featureModule(name: "ApplicationFeature")
+            case .arcade:
+                return featureModule(name: "ArcadeFeature")
+            case .search:
+                return featureModule(name: "SearchFeature")
+            }
+        }
+        
+        private func featureModule(name: String) -> TargetDependency {
+            .project(target: name, path: .relativeToRoot("Projects/Feature/\(name)"))
+        }
     }
 }

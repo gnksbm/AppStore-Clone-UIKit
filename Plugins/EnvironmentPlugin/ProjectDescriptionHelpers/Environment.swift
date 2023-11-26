@@ -25,3 +25,9 @@ public extension DeploymentTarget {
         supportsMacDesignedForIOS: false
     )
 }
+
+extension InfoPlist.Value {
+    static let appName: Self = .init(stringLiteral: .appName)
+    static let version: Self = "1"
+    static let shortVersion: Self = "1.0"
+}

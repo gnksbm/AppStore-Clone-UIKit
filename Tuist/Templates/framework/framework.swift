@@ -10,7 +10,7 @@ import ProjectDescription
 private let nameAttribute = Template.Attribute.required("name")
 
 private let template = Template(
-    description: "Feature 모듈 템플릿",
+    description: "Framework 모듈 템플릿",
     attributes: [
         nameAttribute,
     ],

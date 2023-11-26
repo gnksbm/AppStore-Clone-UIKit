@@ -8,14 +8,9 @@
 
 import ProjectDescription
 
-extension InfoPlist.Value {
-    fileprivate static var version: Self = "1"
-    fileprivate static var shortVersion: Self = "1.0"
-}
-
 extension InfoPlist {
     public static let current: Self = .extendingDefault(with: [
-        "BundleDisplayName": "AppStore",
+        "BundleDisplayName": .appName,
         "CFBundleShortVersionString": .shortVersion,
         "CFBundleVersion": .version,
         "UILaunchStoryboardName": "LaunchScreen",
@@ -31,24 +26,4 @@ extension InfoPlist {
             ]
         ],
     ])
-}
-
-extension Project {
-    static let infoPlist: [String: InfoPlist.Value] = [
-        "BundleDisplayName": "AppStore",
-        "CFBundleShortVersionString": .shortVersion,
-        "CFBundleVersion": .version,
-        "UILaunchStoryboardName": "LaunchScreen",
-        "UIApplicationSceneManifest": [
-            "UIApplicationSupportsMultipleScenes": false,
-            "UISceneConfigurations": [
-                "UIWindowSceneSessionRoleApplication": [
-                    [
-                        "UISceneConfigurationName": "Default Configuration",
-                        "UISceneDelegateClassName": "$(PRODUCT_MODULE_NAME).SceneDelegate"
-                    ],
-                ]
-            ]
-        ],
-    ]
 }

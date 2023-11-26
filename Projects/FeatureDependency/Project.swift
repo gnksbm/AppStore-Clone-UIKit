@@ -1,8 +1,9 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let project = Project.module(
+let project = Project.makeProject(
     name: "FeatureDependency",
+    targetKinds: .framework,
     dependencies: [
         .domain,
         .designSystem

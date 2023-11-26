@@ -1,8 +1,8 @@
 //
 //  Scripts.swift
-//  ProjectDescriptionHelpers
+//  EnvironmentPlugin
 //
-//  Created by gnksbm on 2023/11/19.
+//  Created by gnksbm on 2023/11/26.
 //
 
 import ProjectDescription

@@ -17,12 +17,6 @@ public final class DefaultSearchAppUseCase: SearchAppUseCase {
     }
     
     public func searchApp(query: SearchQuery) async -> Observable<[ApplicationData]> {
-        let result = await repository.searchApp(query: query)
-        switch result {
-        case .success(let appData):
-            return Observable.just(appData)
-        case .failure(let error):
-            return .error(error)
-        }
+        return await repository.searchApp(query: query)
     }
 }

@@ -8,10 +8,11 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let project = Project.module(
+let project = Project.makeProject(
     name: "ThirdPartyLibs",
+    targetKinds: .framework,
     dependencies: [
-        .SPM.rxSwift.external,
-        .SPM.rxCocoa.external,
+        .rxSwift,
+        .rxCocoa,
     ]
 )
