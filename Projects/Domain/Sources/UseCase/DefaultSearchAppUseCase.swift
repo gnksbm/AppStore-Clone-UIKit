@@ -1,6 +1,6 @@
 //
 //  DefaultSearchAppUseCase.swift
-//  AppStore
+//  Domain
 //
 //  Created by gnksbm on 2023/11/19.
 //  Copyright © 2023 https://github.com/gnksbm/Clone_AppStore. All rights reserved.
@@ -10,13 +10,20 @@ import Foundation
 import RxSwift
 
 public final class DefaultSearchAppUseCase: SearchAppUseCase {
-    private let repository: ApplicationRepository
+    private let applicationRepository: ApplicationRepository
+    private let randomWordRepository: RandomWordRepository
     
-    public init(repository: ApplicationRepository) {
-        self.repository = repository
+    public init(applicationRepository: ApplicationRepository,
+                randomWordRepository: RandomWordRepository
+    ) {
+        self.applicationRepository = applicationRepository
+        self.randomWordRepository = randomWordRepository
     }
     
-    public func searchApp(query: SearchQuery) async -> Observable<[ApplicationData]> {
-        return await repository.searchApp(query: query)
+    public func searchApp(query: SearchQuery) -> Observable<[ApplicationData]> {
+        return applicationRepository.searchApp(query: query)
+    }
+    public func getRandomWords(query: RandomWordQuery) -> Observable<[String]> {
+        randomWordRepository.getWords(query: query)
     }
 }
