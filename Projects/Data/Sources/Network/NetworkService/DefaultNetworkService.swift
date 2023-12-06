@@ -7,39 +7,39 @@
 //
 
 import Foundation
+
 import RxSwift
 
 public final class DefaultNetworkService: NetworkService {
     public init() { }
     
-    public func request(endPoint: EndPoint) async -> Result<Data, Error> {
-        guard let urlRequest = endPoint.toURLRequest() else {
-            return .failure(NetworkError.invalidURL)
-        }
-        do {
-            let (data, response) = try await URLSession.shared.data(for: urlRequest)
-            guard let httpResponse = response as? HTTPURLResponse,
-                  200..<300 ~= httpResponse.statusCode else {
-                return .failure(NetworkError.invalidStatusCode)
-            }
-            return .success(data)
-        } catch {
-            return .failure(NetworkError.transportError(error))
-        }
-    }
-    func request(endPoint: EndPoint) async -> Observable<(Data)> {
+    public func request(endPoint: EndPoint) -> Observable<(Data)> {
         guard let urlRequest = endPoint.toURLRequest() else {
             return .error(NetworkError.invalidURL)
         }
-        do {
-            let (data, response) = try await URLSession.shared.data(for: urlRequest)
-            guard let httpResponse = response as? HTTPURLResponse,
-                  200..<300 ~= httpResponse.statusCode else {
-                return .error(NetworkError.invalidStatusCode)
+        return .create { emitter in
+            let task = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
+                if let error {
+                    emitter.onError(NetworkError.transportError(error))
+                }
+                guard let httpResponse = response as? HTTPURLResponse,
+                      200...299 ~= httpResponse.statusCode
+                else {
+                    emitter.onError(NetworkError.invalidStatusCode)
+                    return
+                }
+                guard let data else {
+                    emitter.onError(NetworkError.invalidData)
+                    return
+                }
+                emitter.onNext(data)
+                emitter.onCompleted()
             }
-            return .just(data)
-        } catch {
-            return .error(NetworkError.transportError(error))
+            task.resume()
+            
+            return Disposables.create {
+                task.cancel()
+            }
         }
     }
 }

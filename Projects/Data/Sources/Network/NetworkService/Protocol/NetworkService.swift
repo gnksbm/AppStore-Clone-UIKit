@@ -8,6 +8,8 @@
 
 import Foundation
 
+import RxSwift
+
 public protocol NetworkService {
-    func request(endPoint: EndPoint) async -> Result<Data, Error>
+    func request(endPoint: EndPoint) -> Observable<(Data)>
 }
