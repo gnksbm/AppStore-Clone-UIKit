@@ -1,41 +1,36 @@
 import UIKit
-import FeatureDependency
+
 import Domain
-import Data
+import Core
+import FeatureDependency
 
 public final class SearchCoordinator: Coordinator {
+    public var parentCoordinator: Coordinator?
     public var childCoordinators: [Coordinator] = []
-    public var navigationController: UINavigationController
+    public let navigationController: UINavigationController
+    
+    public init(
+        parentCoordinator: Coordinator? = nil,
+        navigationController: UINavigationController
+    ) {
+        self.parentCoordinator = parentCoordinator
+        self.navigationController = navigationController
+    }
+    
+    @Injected(ApplicationRepository.self) var applicationRepository: ApplicationRepository
+    @Injected(RandomWordRepository.self) var randomWordRepository: RandomWordRepository
     
     public init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
     
     public func start() {
-    }
-    
-    public func createSearchViewController() -> UINavigationController {
         let searchViewController = SearchViewController(
-            viewModel: SearchViewModel(
-                useCase: DefaultSearchAppUseCase(
-                    repository: DefaultApplicationRepository(
-                        networkService: DefaultNetworkService()
-                    )
-                )
-            )
+            viewModel: SearchViewModel()
         )
-        searchViewController.tabBarItem = .init(title: "검색", image: UIImage(systemName: "magnifyingglass"), tag: 4)
-        navigationController = UINavigationController(rootViewController: searchViewController)
-        return navigationController
-    }
-}
-
-public class UseCaseProvider {
-    public static func makeSearchAppUseCase() -> SearchAppUseCase {
-        return DefaultSearchAppUseCase(
-            repository: DefaultApplicationRepository(
-                networkService: DefaultNetworkService()
-            )
+        navigationController.setViewControllers(
+            [searchViewController],
+            animated: false
         )
     }
 }

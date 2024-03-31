@@ -1,5 +1,7 @@
 import UIKit
+
 import RxSwift
+import RxCocoa
 
 public final class TodayViewController: UIViewController {
     private let viewModel: TodayViewModel
@@ -39,6 +41,16 @@ public final class TodayViewController: UIViewController {
             collectionView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor),
         ])
+    }
+    
+    private func bind() {
+        let output = viewModel.transform(
+            input: .init(
+                viewDidLoad: rx.sentMessage(#selector(UIViewController.viewDidLoad))
+                    .map { _ in }
+                    .asObservable()
+            )
+        )
     }
 }
 // MARK: DataSource
@@ -106,14 +118,20 @@ extension TodayViewController {
 
 #if DEBUG
 import FeatureDependency
+import Domain
 import SwiftUI
 struct TodayViewController_Preview: PreviewProvider {
     static var previews: some View {
-        UIKitPreview(
+        UIKitPreview {
             TodayViewController(
-                viewModel: TodayViewModel()
+                viewModel: TodayViewModel(
+                    useCase: DafaultTodayUseCase(
+                        applicationRepository: MockApplicationRepository(),
+                        randomWordRepository: MockRandomWordRepository()
+                    )
+                )
             )
-        )
+        }
     }
 }
 #endif

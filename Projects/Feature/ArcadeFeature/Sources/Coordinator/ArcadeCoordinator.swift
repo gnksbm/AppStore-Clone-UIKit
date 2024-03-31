@@ -3,22 +3,25 @@ import UIKit
 import FeatureDependency
 
 public final class ArcadeCoordinator: Coordinator {
+    public var parentCoordinator: Coordinator?
     public var childCoordinators: [Coordinator] = []
-    public var navigationController: UINavigationController
+    public let navigationController: UINavigationController
     
-    public init(navigationController: UINavigationController) {
+    public init(
+        parentCoordinator: Coordinator? = nil,
+        navigationController: UINavigationController
+    ) {
+        self.parentCoordinator = parentCoordinator
         self.navigationController = navigationController
     }
     
     public func start() {
-    }
-    
-    public func createArcadeViewController() -> UINavigationController {
         let arcadeViewController = ArcadeViewController(
             viewModel: ArcadeViewModel()
         )
-        arcadeViewController.tabBarItem = .init(title: "Arcade", image: UIImage(systemName: "logo.playstation"), tag: 3)
-        navigationController = UINavigationController(rootViewController: arcadeViewController)
-        return navigationController
+        navigationController.setViewControllers(
+            [arcadeViewController],
+            animated: false
+        )
     }
 }

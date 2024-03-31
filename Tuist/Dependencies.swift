@@ -7,10 +7,11 @@
 
 import ProjectDescription
 
+import DependencyPlugin
+
 let spm = SwiftPackageManagerDependencies(
-    [
-        .remote(url: "https://github.com/ReactiveX/RxSwift", requirement: .upToNextMinor(from: "6.0.0")),
-    ]
+    .thirdPartyRemote,
+    productTypes: .thirdPartyTypes
 )
 
 let carthage = CarthageDependencies(

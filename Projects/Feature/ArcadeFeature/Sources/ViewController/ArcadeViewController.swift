@@ -24,11 +24,11 @@ import SwiftUI
 import FeatureDependency
 struct ArcadeViewController_Preview: PreviewProvider {
     static var previews: some View {
-        UIKitPreview(
-        ArcadeViewController(
+        UIKitPreview {
+            ArcadeViewController(
                 viewModel: ArcadeViewModel()
             )
-        )
+        }
     }
 }
 #endif

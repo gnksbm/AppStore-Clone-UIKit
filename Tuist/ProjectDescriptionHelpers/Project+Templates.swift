@@ -14,7 +14,7 @@ extension Project {
     public static func makeProject(
         name: String,
         targetKinds: TargetKind,
-        entitlements: Path? = nil,
+        entitlements: Entitlements? = nil,
         isTestable: Bool = false,
         hasResource: Bool = false,
         dependencies: [TargetDependency]
@@ -35,10 +35,9 @@ extension Project {
                 var result = [Target]()
                 let framework = frameworkTarget(name: name, entitlements: entitlements, hasResource: hasResource, dependencies: dependencies)
                 result.append(framework)
-                if isTestable {
-                    let test = unitTestTarget(name: name, dependencies: dependencies)
-                    result.append(test)
-                }
+                let frameworkDependency = TargetDependency.target(framework)
+                let test = unitTestTarget(name: name, dependencies: [frameworkDependency])
+                result.append(test)
                 return result
             case .feature:
                 var result = [Target]()
@@ -47,7 +46,7 @@ extension Project {
                 let frameworkDependency = TargetDependency.target(framework)
                 let demoApp = demoAppTarget(name: name, entitlements: entitlements, dependencies: [frameworkDependency])
                 result.append(demoApp)
-                let test = unitTestTarget(name: name, isFeature: true, dependencies: dependencies)
+                let test = unitTestTarget(name: name, isFeature: true, dependencies: [frameworkDependency])
                 result.append(test)
                 return result
             }
@@ -60,7 +59,7 @@ extension Project {
     
     private static func appTarget(
         name: String,
-        entitlements: Path?,
+        entitlements: Entitlements?,
         dependencies: [TargetDependency]
     ) -> Target {
         let target: Target = .init(
@@ -82,7 +81,7 @@ extension Project {
 
     private static func demoAppTarget(
         name: String,
-        entitlements: Path? = nil,
+        entitlements: Entitlements? = nil,
         dependencies: [TargetDependency]
     ) -> Target {
         let target: Target = .init(
@@ -106,7 +105,7 @@ extension Project {
 
     private static func frameworkTarget(
         name: String,
-        entitlements: Path?,
+        entitlements: Entitlements?,
         hasResource: Bool,
         isFeature: Bool = false,
         dependencies: [TargetDependency]
@@ -141,7 +140,8 @@ extension Project {
             deploymentTarget: .current,
             infoPlist: .current,
             sources: ["Tests/**"],
-            scripts: isFeature ? [.featureSwiftLint] : [.swiftLint]
+            scripts: isFeature ? [.featureSwiftLint] : [.swiftLint],
+            dependencies: dependencies
         )
     }
 }

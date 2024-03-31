@@ -20,7 +20,9 @@ import FeatureDependency
 
 struct TabBarViewController_Preview: PreviewProvider {
     static var previews: some View {
-        UIKitPreview(TabBarViewController())
+        UIKitPreview {
+            TabBarViewController()
+        }
     }
 }
 #endif

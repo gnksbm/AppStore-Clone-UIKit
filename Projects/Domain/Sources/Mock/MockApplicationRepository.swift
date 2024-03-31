@@ -11,6 +11,8 @@ import Foundation
 import RxSwift
 
 public final class MockApplicationRepository: ApplicationRepository {
+    public init() { }
+    
     public func searchApp(query: SearchQuery) -> RxSwift.Observable<[ApplicationData]> {
         .just([])
     }

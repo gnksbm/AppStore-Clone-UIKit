@@ -1,23 +1,34 @@
 import UIKit
+
+import Domain
+import Core
 import FeatureDependency
 
 public final class TodayCoordinator: Coordinator {
+    public var parentCoordinator: Coordinator?
     public var childCoordinators: [Coordinator] = []
-    public var navigationController: UINavigationController
+    public let navigationController: UINavigationController
     
-    public init(navigationController: UINavigationController) {
+    public init(
+        parentCoordinator: Coordinator? = nil,
+        navigationController: UINavigationController
+    ) {
+        self.parentCoordinator = parentCoordinator
         self.navigationController = navigationController
     }
     
     public func start() {
-    }
-    
-    public func createTodayViewController() -> UINavigationController {
         let todayViewController = TodayViewController(
-            viewModel: TodayViewModel()
+            viewModel: TodayViewModel(
+                useCase: DafaultTodayUseCase(
+                    applicationRepository: MockApplicationRepository(),
+                    randomWordRepository: MockRandomWordRepository()
+                )
+            )
         )
-        todayViewController.tabBarItem = .init(title: "투데이", image: UIImage(systemName: "doc.text.image"), tag: 0)
-        navigationController = UINavigationController(rootViewController: todayViewController)
-        return navigationController
+        navigationController.setViewControllers(
+            [todayViewController],
+            animated: false
+        )
     }
 }

@@ -24,11 +24,11 @@ import SwiftUI
 import FeatureDependency
 struct ApplicationViewController_Preview: PreviewProvider {
     static var previews: some View {
-        UIKitPreview(
-        ApplicationViewController(
+        UIKitPreview {
+            ApplicationViewController(
                 viewModel: ApplicationViewModel()
             )
-        )
+        }
     }
 }
 #endif

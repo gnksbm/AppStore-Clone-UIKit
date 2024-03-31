@@ -15,33 +15,108 @@ import ArcadeFeature
 import SearchFeature
 
 public final class TabBarCoordinator: Coordinator {
+    public var parentCoordinator: Coordinator?
     public var childCoordinators: [Coordinator] = []
-    public var navigationController: UINavigationController
-    private var tabBarController: UITabBarController!
+    public let navigationController: UINavigationController
     
-    public init(navigationController: UINavigationController) {
+    public init(
+        parentCoordinator: Coordinator? = nil,
+        navigationController: UINavigationController
+    ) {
+        self.parentCoordinator = parentCoordinator
         self.navigationController = navigationController
     }
     
     public func start() {
-        tabBarController = TabBarViewController()
-        
-        let todayCoordinator = TodayCoordinator(navigationController: navigationController)
-        let gameCoordinator = GameCoordinator(navigationController: navigationController)
-        let applicationCoordinator = ApplicationCoordinator(navigationController: navigationController)
-        let arcadeCoordinator = ArcadeCoordinator(navigationController: navigationController)
-        let searchCoordinator = SearchCoordinator(navigationController: navigationController)
-        
-        childCoordinators = [todayCoordinator, gameCoordinator, applicationCoordinator, arcadeCoordinator, searchCoordinator]
-        
-        let todayViewController = todayCoordinator.createTodayViewController()
-        let gameViewController = gameCoordinator.createGameViewController()
-        let applicationViewController = applicationCoordinator.createApplicationViewController()
-        let arcadeViewController = arcadeCoordinator.createArcadeViewController()
-        let searchViewController = searchCoordinator.createSearchViewController()
-        
-        tabBarController.viewControllers = [todayViewController, gameViewController, applicationViewController, arcadeViewController, searchViewController]
-        
-        navigationController.pushViewController(tabBarController, animated: false)
+        let tabBarViewController = TabBarViewController()
+        tabBarViewController.viewControllers = TabKind.allCases
+            .map { tabKind in
+                makeNavigationController(tabKind: tabKind)
+            }
+        navigationController.isNavigationBarHidden = true
+        navigationController.pushViewController(
+            tabBarViewController,
+            animated: false
+        )
+    }
+    
+    private func makeNavigationController(tabKind: TabKind) -> UINavigationController {
+        let navigationController = UINavigationController()
+        navigationController.tabBarItem = tabKind.tabBarItem
+        setupChildCoordinator(
+            tabKind: tabKind,
+            navigationController: navigationController
+        )
+        return navigationController
+    }
+    
+    private func setupChildCoordinator(
+        tabKind: TabKind,
+        navigationController: UINavigationController
+    ) {
+        var childCoordinator: Coordinator
+        switch tabKind {
+        case .today:
+            childCoordinator = TodayCoordinator(
+                navigationController: navigationController
+            )
+        case .game:
+            childCoordinator = GameCoordinator(
+                navigationController: navigationController
+            )
+        case .app:
+            childCoordinator = ApplicationCoordinator(
+                navigationController: navigationController
+            )
+        case .arcade:
+            childCoordinator = ArcadeCoordinator(
+                navigationController: navigationController
+            )
+        case .search:
+            childCoordinator = SearchCoordinator(
+                navigationController: navigationController
+            )
+        }
+        childCoordinators.append(childCoordinator)
+        childCoordinator.start()
+    }
+}
+
+enum TabKind: CaseIterable {
+    case today, game, app, arcade, search
+    
+    var tabBarItem: UITabBarItem {
+        switch self {
+        case .today:
+            return .init(
+                title: "투데이",
+                image: UIImage(systemName: "doc.text.image"),
+                tag: 0
+            )
+        case .game:
+            return .init(
+                title: "게임",
+                image: UIImage(systemName: "gamecontroller"),
+                tag: 1
+            )
+        case .app:
+            return .init(
+                title: "앱",
+                image: UIImage(systemName: "square.stack.3d.up.fill"),
+                tag: 2
+            )
+        case .arcade:
+            return .init(
+                title: "Arcade",
+                image: UIImage(systemName: "logo.playstation"),
+                tag: 3
+            )
+        case .search:
+            return .init(
+                title: "검색", 
+                image: UIImage(systemName: "magnifyingglass"),
+                tag: 4
+            )
+        }
     }
 }

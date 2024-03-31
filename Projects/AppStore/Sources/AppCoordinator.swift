@@ -11,15 +11,26 @@ import FeatureDependency
 import BaseTabFeature
 
 final class AppCoordinator: Coordinator {
-    var childCoordinators: [Coordinator] = []
-    var navigationController: UINavigationController
+    public var parentCoordinator: Coordinator?
+    public var childCoordinators: [Coordinator] = []
+    public let navigationController: UINavigationController
+    
+    public init(
+        parentCoordinator: Coordinator? = nil,
+        navigationController: UINavigationController
+    ) {
+        self.parentCoordinator = parentCoordinator
+        self.navigationController = navigationController
+    }
     
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
     
     func start() {
-        let tabBarCoordinator = TabBarCoordinator(navigationController: navigationController)
+        let tabBarCoordinator = TabBarCoordinator(
+            navigationController: navigationController
+        )
         childCoordinators.append(tabBarCoordinator)
         tabBarCoordinator.start()
     }

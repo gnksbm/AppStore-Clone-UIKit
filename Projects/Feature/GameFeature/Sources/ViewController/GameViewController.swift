@@ -24,11 +24,11 @@ import SwiftUI
 import FeatureDependency
 struct GameViewController_Preview: PreviewProvider {
     static var previews: some View {
-        UIKitPreview(
-        GameViewController(
+        UIKitPreview { 
+            GameViewController(
                 viewModel: GameViewModel()
             )
-        )
+        }
     }
 }
 #endif
