@@ -1,13 +1,15 @@
 import UIKit
 
+import DesignSystem
+
 import RxSwift
 
-public final class GameViewController: UIViewController {
+public final class GameViewController: BaseViewController {
     private let viewModel: GameViewModel
     
     public init(viewModel: GameViewModel) {
         self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
+        super.init()
     }
         
     required init?(coder: NSCoder) {

@@ -1,21 +1,26 @@
 import UIKit
 
+import DesignSystem
+
 import RxSwift
 import RxCocoa
 
-public final class TodayViewController: UIViewController {
+public final class TodayViewController: BaseViewController {
     private let viewModel: TodayViewModel
     private var dataSource: UICollectionViewDiffableDataSource<TodaySection, String>!
     private var snapshot: NSDiffableDataSourceSnapshot<TodaySection, String>!
     
     private lazy var collectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: makeLayout())
+        let collectionView = UICollectionView(
+            frame: .zero, 
+            collectionViewLayout: makeLayout()
+        )
         return collectionView
     }()
     
     public init(viewModel: TodayViewModel) {
         self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
+        super.init()
     }
     
     required init?(coder: NSCoder) {
@@ -67,7 +72,8 @@ extension TodayViewController {
         }
     }
     
-    private func makeLargeRegistration() -> UICollectionView.CellRegistration<TodayLargeCell, String> {
+    private func makeLargeRegistration(
+    ) -> UICollectionView.CellRegistration<TodayLargeCell, String> {
         .init { _, _, _ in
             
         }
@@ -124,12 +130,7 @@ struct TodayViewController_Preview: PreviewProvider {
     static var previews: some View {
         UIKitPreview {
             TodayViewController(
-                viewModel: TodayViewModel(
-                    useCase: DafaultTodayUseCase(
-                        applicationRepository: MockApplicationRepository(),
-                        randomWordRepository: MockRandomWordRepository()
-                    )
-                )
+                viewModel: TodayViewModel()
             )
         }
     }

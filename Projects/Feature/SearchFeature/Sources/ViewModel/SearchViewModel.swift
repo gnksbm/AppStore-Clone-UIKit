@@ -17,12 +17,25 @@ public final class SearchViewModel: ViewModel {
     
     public func transform(input: Input) -> Output {
         let output = Output(
-            appList: .just([]),
-            recommend: useCase.getRandomWords(query: .init())
+            searchTermSuggestion: useCase.fetchRandomWords(query: .init()),
+            recommendedApp: useCase.recommendedApp,
+            searchedApp: .init()
         )
         
+        input.viewWillAppear
+            .withUnretained(self)
+            .subscribe(
+                onNext: { viewModel, _ in
+                    viewModel.useCase.fetchRecommendedApp()
+                }
+            )
+            .disposed(by: disposeBag)
+        
         input.searchBarText
-            .debounce(.microseconds(2), scheduler: MainScheduler.instance)
+            .debounce(
+                .milliseconds(500),
+                scheduler: MainScheduler.instance
+            )
             .distinctUntilChanged()
             .withUnretained(self)
             .subscribe(
@@ -33,6 +46,11 @@ public final class SearchViewModel: ViewModel {
                 }
             )
             .disposed(by: disposeBag)
+        
+        useCase.searchedApp
+            .bind(to: output.searchedApp)
+            .disposed(by: disposeBag)
+        
         return output
     }
 }
@@ -42,16 +60,16 @@ extension SearchViewModel {
         let viewWillAppear: Observable<Void>
         let searchBarText: Observable<String>
     }
+    
     public struct Output {
-        let appList: Observable<[ApplicationData]>
-        let recommend: Observable<[String]>
+        let searchTermSuggestion: Observable<[String]>
+        let recommendedApp: PublishSubject<[SearchAppMinResponse]>
+        let searchedApp: PublishSubject<[SearchAppMinResponse]>
     }
 }
 
 #if DEBUG
 import SwiftUI
-import FeatureDependency
-import Domain
 
 struct SearchViewModel_Preview: PreviewProvider {
     static var previews: some View {

@@ -19,8 +19,8 @@ public final class DefaultRandomWordRepository: RandomWordRepository {
         self.networkService = networkService
     }
     
-    public func getWords(query: RandomWordQuery) -> Observable<[String]> {
-        networkService.request(endPoint: RandomWordEndPoint(query: query))
+    public func getWords(request: RandomWordRequest) -> Observable<[String]> {
+        networkService.request(endPoint: RandomWordEndPoint(query: request))
             .decode(type: [String].self, decoder: JSONDecoder())
             .map { $0 }
     }

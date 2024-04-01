@@ -1,5 +1,5 @@
 //
-//  SearchQuery.swift
+//  SearchAppRequest.swift
 //  Domain
 //
 //  Created by gnksbm on 2023/11/18.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct SearchQuery {
+public struct SearchAppRequest {
     public let term: String
     public let limit: Int
     

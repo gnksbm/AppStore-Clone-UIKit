@@ -19,10 +19,16 @@ public final class DefaultApplicationRepository: ApplicationRepository {
         self.networkService = networkService
     }
     
-    public func searchApp(query: SearchQuery) -> Observable<[ApplicationData]> {
-        let endPoint = SearchEndPoint(query: query)
-        let result = networkService.request(endPoint: endPoint)
-        return result.decode(type: SearchResponseDTO.self, decoder: JSONDecoder())
-            .map { $0.toDomain() }
+    public func searchApp(
+        request: SearchAppRequest
+    ) -> Observable<[SearchAppMinResponse]> {
+        networkService.request(
+            endPoint: SearchEndPoint(query: request)
+        )
+        .decode(
+            type: SearchAppDTO.self,
+            decoder: JSONDecoder()
+        )
+        .map { $0.toAppMinimun() }
     }
 }

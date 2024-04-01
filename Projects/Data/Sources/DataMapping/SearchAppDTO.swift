@@ -1,5 +1,5 @@
 //
-//  SearchResponseDTO.swift
+//  SearchAppDTO.swift
 //  AppStore
 //
 //  Created by gnksbm on 2023/11/16.
@@ -10,18 +10,24 @@ import Foundation
 
 import Domain
 
-struct SearchResponseDTO: Codable {
+struct SearchAppDTO: Codable {
     let resultCount: Int
     let results: [SearchResult]
 }
 
-extension SearchResponseDTO {
-    func toDomain() -> [ApplicationData] {
-        results.map { .init(appName: $0.trackName) }
+extension SearchAppDTO {
+    func toAppMinimun() -> [SearchAppMinResponse] {
+        results.map { dto in
+            .init(
+                iconUrl: dto.artworkUrl60,
+                appName: dto.trackName,
+                appDescription: dto.description
+            )
+        }
     }
 }
 
-extension SearchResponseDTO {
+extension SearchAppDTO {
     struct SearchResult: Codable {
         /// 앱 ID
         let trackId: Int

@@ -11,15 +11,16 @@ import UIKit
 extension AppDelegate {
     func setupAppearance() {
         setupTabbarAppearance()
-        setupNavigationBarAppearance()
+        setupNavigationBarAppearance()   
     }
     
     private func setupTabbarAppearance() {
         UITabBar.appearance().backgroundColor = .systemBackground
+        UITabBar.appearance().isTranslucent = false
     }
     
     private func setupNavigationBarAppearance() {
         UINavigationBar.appearance().backgroundColor = .systemBackground
-        UINavigationBar.appearance().isTranslucent = false
+        UINavigationBar.appearance().isTranslucent = true
     }
 }

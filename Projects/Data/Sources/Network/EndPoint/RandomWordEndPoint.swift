@@ -29,7 +29,7 @@ struct RandomWordEndPoint: EndPoint {
         .get
     }
     
-    init(query: RandomWordQuery) {
+    init(query: RandomWordRequest) {
         self.queryParameter = [
             "number": query.count,
             "length": query.wordLength,

@@ -10,6 +10,10 @@ import Foundation
 import RxSwift
 
 public protocol SearchAppUseCase {
-    func searchApp(query: SearchQuery) -> Observable<[ApplicationData]>
-    func getRandomWords(query: RandomWordQuery) -> Observable<[String]>
+    var searchedApp: PublishSubject<[SearchAppMinResponse]> { get }
+    var recommendedApp: PublishSubject<[SearchAppMinResponse]> { get }
+    
+    func searchApp(query: SearchAppRequest)
+    func fetchRandomWords(query: RandomWordRequest) -> Observable<[String]>
+    func fetchRecommendedApp()
 }

@@ -11,5 +11,5 @@ import Foundation
 import RxSwift
 
 public protocol TodayUseCase {
-    func fetchTodayApp() -> Observable<[ApplicationData]>
+    func fetchTodayApp() -> Observable<[SearchAppMinResponse]>
 }

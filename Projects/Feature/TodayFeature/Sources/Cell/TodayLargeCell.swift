@@ -10,10 +10,7 @@ import UIKit
 
 public final class TodayLargeCell: UICollectionViewCell {
     let imageView: UIImageView = {
-//        let imgConfig = UIImage.SymbolConfiguration(font: .boldSystemFont(ofSize: <#T##CGFloat#>))
         let imageView = UIImageView()
-//        imageView.image = <#UIImage#>
-//        imageView.preferredSymbolConfiguration = imgConfig
         return imageView
     }()
     

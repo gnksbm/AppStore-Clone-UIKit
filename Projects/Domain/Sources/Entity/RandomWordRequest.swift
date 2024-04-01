@@ -1,5 +1,5 @@
 //
-//  RandomWordQuery.swift
+//  RandomWordRequest.swift
 //  Domain
 //
 //  Created by gnksbm on 2023/11/27.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct RandomWordQuery {
+public struct RandomWordRequest {
     public let count: String
     public let wordLength: String
     

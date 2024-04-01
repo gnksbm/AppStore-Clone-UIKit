@@ -8,7 +8,7 @@
 
 import UIKit
 
-extension UIStackView {
+public extension UIStackView {
     func addDivider(color: UIColor) {
         let subViewCount = self.arrangedSubviews.count
         var insertAt = 1
@@ -20,11 +20,20 @@ extension UIStackView {
                 insertAt += 2
                 switch self.axis {
                 case .vertical:
-                    separator.heightAnchor.constraint(equalToConstant: 1).isActive = true
-                    separator.widthAnchor.constraint(equalTo: self.heightAnchor, multiplier: 1).isActive = true
+                    separator.heightAnchor.constraint(
+                        equalToConstant: 1
+                    ).isActive = true
+                    separator.widthAnchor.constraint(
+                        equalTo: self.heightAnchor, 
+                        multiplier: 1
+                    ).isActive = true
                 case .horizontal:
-                    separator.widthAnchor.constraint(equalToConstant: 1).isActive = true
-                    separator.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 1).isActive = true
+                    separator.widthAnchor.constraint(
+                        equalToConstant: 1
+                    ).isActive = true
+                    separator.heightAnchor.constraint(
+                        equalTo: self.heightAnchor, multiplier: 1
+                    ).isActive = true
                 @unknown default:
                     break
                 }

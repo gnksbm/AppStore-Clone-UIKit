@@ -19,12 +19,7 @@ public final class TodayCoordinator: Coordinator {
     
     public func start() {
         let todayViewController = TodayViewController(
-            viewModel: TodayViewModel(
-                useCase: DafaultTodayUseCase(
-                    applicationRepository: MockApplicationRepository(),
-                    randomWordRepository: MockRandomWordRepository()
-                )
-            )
+            viewModel: TodayViewModel()
         )
         navigationController.setViewControllers(
             [todayViewController],

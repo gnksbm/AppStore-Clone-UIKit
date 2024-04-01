@@ -1,13 +1,15 @@
 import UIKit
 
+import DesignSystem
+
 import RxSwift
 
-public final class ArcadeViewController: UIViewController {
+public final class ArcadeViewController: BaseViewController {
     private let viewModel: ArcadeViewModel
     
     public init(viewModel: ArcadeViewModel) {
         self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
+        super.init()
     }
         
     required init?(coder: NSCoder) {

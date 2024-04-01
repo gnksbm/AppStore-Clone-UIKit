@@ -8,8 +8,10 @@ import RxSwift
 import RxCocoa
 
 public final class TodayViewModel: ViewModel {
-    private var disposeBag = DisposeBag()
+    @Injected(TodayUseCase.self)
     private var useCase: TodayUseCase
+    
+    private var disposeBag = DisposeBag()
     
     public struct Input {
         let viewDidLoad: Observable<Void>
@@ -17,8 +19,7 @@ public final class TodayViewModel: ViewModel {
     public struct Output {
     }
     
-    public init(useCase: TodayUseCase) {
-        self.useCase = useCase
+    public init() {
     }
     
     public func transform(input: Input) -> Output {

@@ -21,9 +21,9 @@ public final class DafaultTodayUseCase: TodayUseCase {
         self.randomWordRepository = randomWordRepository
     }
     
-    public func fetchTodayApp() -> Observable<[ApplicationData]> {
+    public func fetchTodayApp() -> Observable<[SearchAppMinResponse]> {
 //        applicationRepository.searchApp(query: .init(term: <#T##String#>))
-        randomWordRepository.getWords(query: .init(count: 1))
+        randomWordRepository.getWords(request: .init(count: 1))
         return .just([])
     }
 }

@@ -1,5 +1,6 @@
 excluded: # 린트 과정에서 무시할 파일 경로. `included`보다 우선순위 높음
     - Projects/App/Sources/Application
+    - Projects/FeatureDependency/Sources/Mock/**
     - Tuist
     - Derived
 identifier_name:
@@ -8,25 +9,8 @@ identifier_name:
         - 3 # error
     excluded: # 제외할 문자열 목록
         - f
-        - a
-        - b
-        - app
-        - nx
-        - ny
-        - pi
-        - re
-        - sn
-        - sf
-        - ro
-        - ra
-        - x
-        - y
-        - am
-        - pm
-        - tm
-        - etc
-        - to
-        - i
+        - vc
+        - vm
 function_body_length:
     - 150 # warning
     - 300 # error
@@ -37,7 +21,7 @@ file_length:
     - 1000 # warning
     - 2000 # error
 line_length:
-    - 300
+    - 90
     - 400
 disabled_rules: # 제외하고 싶은 룰
     - conditional_returns_on_newline

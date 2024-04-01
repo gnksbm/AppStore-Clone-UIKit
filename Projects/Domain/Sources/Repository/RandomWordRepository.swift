@@ -11,5 +11,5 @@ import Foundation
 import RxSwift
 
 public protocol RandomWordRepository {
-    func getWords(query: RandomWordQuery) -> Observable<[String]>
+    func getWords(request: RandomWordRequest) -> Observable<[String]>
 }

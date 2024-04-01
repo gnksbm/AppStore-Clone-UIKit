@@ -18,7 +18,9 @@ public final class DefaultNetworkService: NetworkService {
             return .error(NetworkError.invalidURL)
         }
         return .create { emitter in
-            let task = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
+            let task = URLSession.shared.dataTask(
+                with: urlRequest
+            ) { data, response, error in
                 if let error {
                     emitter.onError(NetworkError.transportError(error))
                 }

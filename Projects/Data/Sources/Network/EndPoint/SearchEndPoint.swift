@@ -29,7 +29,7 @@ struct SearchEndPoint: EndPoint {
         .get
     }
     
-    init(query: SearchQuery) {
+    init(query: SearchAppRequest) {
         self.queryParameter = [
             "country": "kr",
             "entity": "software",

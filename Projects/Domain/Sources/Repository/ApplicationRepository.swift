@@ -11,5 +11,5 @@ import Foundation
 import RxSwift
 
 public protocol ApplicationRepository {
-    func searchApp(query: SearchQuery) -> Observable<[ApplicationData]>
+    func searchApp(request: SearchAppRequest) -> Observable<[SearchAppMinResponse]>
 }

@@ -1,13 +1,15 @@
 import UIKit
 
+import DesignSystem
+
 import RxSwift
 
-public final class ApplicationViewController: UIViewController {
+public final class ApplicationViewController: BaseViewController {
     private let viewModel: ApplicationViewModel
     
     public init(viewModel: ApplicationViewModel) {
         self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
+        super.init()
     }
         
     required init?(coder: NSCoder) {

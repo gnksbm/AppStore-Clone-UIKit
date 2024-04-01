@@ -12,8 +12,9 @@ import Domain
 
 import RxSwift
 
-class MockRandomWordRepository: RandomWordRepository {
-    func getWords(query: RandomWordQuery) -> Observable<[String]> {
+#if DEBUG
+final class MockRandomWordRepository: RandomWordRepository {
+    func getWords(request: RandomWordRequest) -> Observable<[String]> {
         .just([
             "test1",
             "test2",
@@ -24,3 +25,4 @@ class MockRandomWordRepository: RandomWordRepository {
         ])
     }
 }
+#endif
