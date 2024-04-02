@@ -17,9 +17,6 @@ public final class SearchCoordinator: Coordinator {
         self.navigationController = navigationController
     }
     
-    @Injected(ApplicationRepository.self) var applicationRepository: ApplicationRepository
-    @Injected(RandomWordRepository.self) var randomWordRepository: RandomWordRepository
-    
     public init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }

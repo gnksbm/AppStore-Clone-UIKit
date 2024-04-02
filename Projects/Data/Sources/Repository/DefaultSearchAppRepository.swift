@@ -1,5 +1,5 @@
 //
-//  DefaultApplicationRepository.swift
+//  DefaultSearchAppRepository.swift
 //  AppStore
 //
 //  Created by gnksbm on 2023/11/19.
@@ -12,7 +12,7 @@ import Domain
 
 import RxSwift
 
-public final class DefaultApplicationRepository: ApplicationRepository {
+public final class DefaultSearchAppRepository: SearchAppRepository {
     private let networkService: NetworkService
     
     public init(networkService: NetworkService) {
@@ -29,6 +29,19 @@ public final class DefaultApplicationRepository: ApplicationRepository {
             type: SearchAppDTO.self,
             decoder: JSONDecoder()
         )
-        .map { $0.toAppMinimun() }
+        .map { $0.toMinimun() }
+    }
+    
+    public func searchApp(
+        request: SearchAppRequest
+    ) -> Observable<[SearchAppMidResponse]> {
+        networkService.request(
+            endPoint: SearchEndPoint(query: request)
+        )
+        .decode(
+            type: SearchAppDTO.self,
+            decoder: JSONDecoder()
+        )
+        .map { $0.toMidian() }
     }
 }

@@ -13,6 +13,7 @@ final class SearchViewController: BaseViewController {
     : NSDiffableDataSourceSnapshot<SearchSection, SearchItem>!
     private var viewModel: SearchViewModel
     
+    private var suggestionTapEvent = PublishSubject<String>()
     private var disposeBag = DisposeBag()
     
     private lazy var collectionView = UICollectionView(
@@ -20,12 +21,13 @@ final class SearchViewController: BaseViewController {
         collectionViewLayout: makeCVLayout()
     )
     
+    private let searchedVC = SearchedAppViewController()
+    
     private lazy var searchController: UISearchController = {
         let searchController = UISearchController(
-            searchResultsController: SearchedAppViewController()
+            searchResultsController: searchedVC
         )
         searchController.searchBar.placeholder = "게임, 앱, 스토리 등"
-        searchController.searchResultsUpdater = self
         return searchController
     }()
     
@@ -107,11 +109,14 @@ final class SearchViewController: BaseViewController {
                         #selector(UIViewController.viewWillAppear)
                     )
                     .map { _ in },
-                searchBarText: searchController.searchBar.rx
-                    .text
-                    .orEmpty
-                    .skip(1)
-                    .asObservable()
+                searchBarText: Observable.merge(
+                    searchController.searchBar.rx
+                        .text
+                        .orEmpty
+                        .skip(1)
+                        .asObservable(),
+                    suggestionTapEvent
+                )
             )
         )
         
@@ -135,6 +140,16 @@ final class SearchViewController: BaseViewController {
                     viewController.updateSnapshot(
                         responses: responses
                     )
+                }
+            )
+            .disposed(by: disposeBag)
+        
+        output.searchedApp
+            .withUnretained(self)
+            .observe(on: MainScheduler.asyncInstance)
+            .subscribe(
+                onNext: { vc, responses in
+                    vc.searchedVC.updateSnapshot(responses: responses)
                 }
             )
             .disposed(by: disposeBag)
@@ -189,6 +204,7 @@ extension SearchViewController {
                     .withUnretained(self)
                     .subscribe(
                         onNext: { vc, text in
+                            vc.suggestionTapEvent.onNext(text)
                             vc.searchController.searchBar.text = text
                             vc.searchController.searchBar.becomeFirstResponder()
                         }
@@ -292,19 +308,25 @@ extension SearchViewController {
                     ),
                     subitems: [item]
                 )
+                group.contentInsets = .init(
+                    top: 0,
+                    leading: 10,
+                    bottom: 0,
+                    trailing: 10
+                )
                 section = NSCollectionLayoutSection(group: group)
                 section.interGroupSpacing = 0
             }
             let header = NSCollectionLayoutBoundarySupplementaryItem(
                 layoutSize: .init(
                     widthDimension: .fractionalWidth(1),
-                    heightDimension: .estimated(40)
+                    heightDimension: .estimated(30)
                 ),
                 elementKind: UICollectionView.elementKindSectionHeader,
                 alignment: .top
             )
             header.contentInsets = .init(
-                top: 0,
+                top: 20,
                 leading: 10,
                 bottom: 0,
                 trailing: 10
@@ -315,7 +337,7 @@ extension SearchViewController {
             section.contentInsets = .init(
                 top: 10,
                 leading: 10,
-                bottom: 20,
+                bottom: 30,
                 trailing: 10
             )
             return section
@@ -338,12 +360,6 @@ extension SearchViewController {
     enum SearchItem: Hashable {
         case discovery(searchTermSuggestion: String)
         case recommended(recommendedApp: SearchAppMinResponse)
-    }
-}
-
-extension SearchViewController: UISearchResultsUpdating {
-    func updateSearchResults(for searchController: UISearchController) {
-        
     }
 }
 

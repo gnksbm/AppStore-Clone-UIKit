@@ -20,8 +20,16 @@ public final class DefaultRandomWordRepository: RandomWordRepository {
     }
     
     public func getWords(request: RandomWordRequest) -> Observable<[String]> {
-        networkService.request(endPoint: RandomWordEndPoint(query: request))
-            .decode(type: [String].self, decoder: JSONDecoder())
-            .map { $0 }
+//        networkService.request(endPoint: RandomWordEndPoint(query: request))
+//            .decode(type: [String].self, decoder: JSONDecoder())
+//            .map { $0 }
+        .just([
+            "버스어디",
+            "토스",
+            "카카오",
+            "네이버",
+            "유튜브",
+            "인스타그램",
+        ])
     }
 }

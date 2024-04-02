@@ -34,7 +34,7 @@ public struct UIKitPreview: UIViewControllerRepresentable {
         DIContainer.register(
             type: SearchAppUseCase.self,
             DefaultSearchAppUseCase(
-                applicationRepository: applicationRepository,
+                searchAppRepository: applicationRepository,
                 randomWordRepository: randomWordRepository
             )
         )

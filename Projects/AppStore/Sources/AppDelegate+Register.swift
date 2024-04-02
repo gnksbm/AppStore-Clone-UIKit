@@ -14,7 +14,7 @@ import Domain
 extension AppDelegate {
     func registerDependencies() {
         let networkService = DefaultNetworkService()
-        let applicationRepository = DefaultApplicationRepository(
+        let searchAppRepository = DefaultSearchAppRepository(
             networkService: networkService
         )
         let randomWordRepository = DefaultRandomWordRepository(
@@ -23,7 +23,7 @@ extension AppDelegate {
         DIContainer.register(
             type: SearchAppUseCase.self,
             DefaultSearchAppUseCase(
-                applicationRepository: applicationRepository,
+                searchAppRepository: searchAppRepository,
                 randomWordRepository: randomWordRepository
             )
         )

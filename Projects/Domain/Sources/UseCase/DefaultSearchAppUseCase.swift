@@ -12,23 +12,29 @@ import RxSwift
 import RxCocoa
 
 public final class DefaultSearchAppUseCase: SearchAppUseCase {
-    private let applicationRepository: ApplicationRepository
+    private let applicationRepository: SearchAppRepository
     private let randomWordRepository: RandomWordRepository
     
-    public let searchedApp = PublishSubject<[SearchAppMinResponse]>()
+    public let searchedApp = PublishSubject<[SearchAppMidResponse]>()
     public let recommendedApp = PublishSubject<[SearchAppMinResponse]>()
     private let disposeBag = DisposeBag()
     
-    public init(applicationRepository: ApplicationRepository,
-                randomWordRepository: RandomWordRepository
+    public init(
+        searchAppRepository: SearchAppRepository,
+        randomWordRepository: RandomWordRepository
     ) {
-        self.applicationRepository = applicationRepository
+        self.applicationRepository = searchAppRepository
         self.randomWordRepository = randomWordRepository
     }
     
     public func searchApp(query: SearchAppRequest) {
         applicationRepository.searchApp(request: query)
-            .bind(to: searchedApp)
+            .withUnretained(self)
+            .subscribe(
+                onNext: { useCase, responses in
+                    useCase.searchedApp.onNext(responses)
+                }
+            )
             .disposed(by: disposeBag)
     }
     

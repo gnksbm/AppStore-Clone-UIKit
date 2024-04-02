@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 
 public protocol SearchAppUseCase {
-    var searchedApp: PublishSubject<[SearchAppMinResponse]> { get }
+    var searchedApp: PublishSubject<[SearchAppMidResponse]> { get }
     var recommendedApp: PublishSubject<[SearchAppMinResponse]> { get }
     
     func searchApp(query: SearchAppRequest)

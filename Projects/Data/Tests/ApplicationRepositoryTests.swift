@@ -11,13 +11,13 @@ import XCTest
 @testable import RxSwift
 
 final class ApplicationRepositoryTests: XCTestCase {
-    var sut: DefaultApplicationRepository!
+    var sut: DefaultSearchAppRepository!
     var networkService: NetworkService!
     var disposeBag: DisposeBag!
     
     override func setUpWithError() throws {
         networkService = DefaultNetworkService()
-        sut = DefaultApplicationRepository(
+        sut = DefaultSearchAppRepository(
             networkService: networkService
         )
         disposeBag = .init()

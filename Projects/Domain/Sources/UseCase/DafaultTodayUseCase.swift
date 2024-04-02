@@ -11,10 +11,10 @@ import Foundation
 import RxSwift
 
 public final class DafaultTodayUseCase: TodayUseCase {
-    private let applicationRepository: ApplicationRepository
+    private let applicationRepository: SearchAppRepository
     private let randomWordRepository: RandomWordRepository
     
-    public init(applicationRepository: ApplicationRepository,
+    public init(applicationRepository: SearchAppRepository,
                 randomWordRepository: RandomWordRepository
     ) {
         self.applicationRepository = applicationRepository

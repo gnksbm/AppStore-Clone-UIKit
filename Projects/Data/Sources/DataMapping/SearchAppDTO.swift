@@ -16,12 +16,29 @@ struct SearchAppDTO: Codable {
 }
 
 extension SearchAppDTO {
-    func toAppMinimun() -> [SearchAppMinResponse] {
+    func toMinimun() -> [SearchAppMinResponse] {
         results.map { dto in
             .init(
                 iconUrl: dto.artworkUrl60,
                 appName: dto.trackName,
                 appDescription: dto.description
+            )
+        }
+    }
+    
+    func toMidian() -> [SearchAppMidResponse] {
+        results.map { dto in
+            .init(
+                minResponse: .init(
+                    iconUrl: dto.artworkUrl60,
+                    appName: dto.trackName,
+                    appDescription: dto.description
+                ),
+                averageRating: dto.averageUserRating,
+                ratingCount: dto.userRatingCount,
+                developerName: dto.artistName,
+                genre: dto.genres.first,
+                screenshotUrls: dto.screenshotUrls
             )
         }
     }

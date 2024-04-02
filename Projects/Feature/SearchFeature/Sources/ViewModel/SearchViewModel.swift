@@ -40,6 +40,10 @@ public final class SearchViewModel: ViewModel {
             .withUnretained(self)
             .subscribe(
                 onNext: { viewModel, text in
+                    guard !text.isEmpty else {
+                        output.searchedApp.onNext([])
+                        return
+                    }
                     viewModel.useCase.searchApp(
                         query: .init(term: text)
                     )
@@ -64,7 +68,7 @@ extension SearchViewModel {
     public struct Output {
         let searchTermSuggestion: Observable<[String]>
         let recommendedApp: PublishSubject<[SearchAppMinResponse]>
-        let searchedApp: PublishSubject<[SearchAppMinResponse]>
+        let searchedApp: PublishSubject<[SearchAppMidResponse]>
     }
 }
 

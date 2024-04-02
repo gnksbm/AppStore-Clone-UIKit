@@ -1,8 +1,8 @@
 //
-//  AppMinimumCVCell.swift
-//  SearchFeature
+//  AppMinimumView.swift
+//  DesignSystem
 //
-//  Created by gnksbm on 3/31/24.
+//  Created by gnksbm on 4/2/24.
 //  Copyright © 2024 https://github.com/gnksbm/Clone_AppStore. All rights reserved.
 //
 
@@ -13,13 +13,13 @@ import Domain
 
 import RxSwift
 
-public final class AppMinimumCVCell: UICollectionViewCell {
-    let disposeBag = DisposeBag()
-    
+public final class AppMinimumView: UIView {
     private let appImgView: UIImageView = {
         let imgView = UIImageView()
         imgView.contentMode = .scaleAspectFit
         imgView.layer.cornerRadius = 10
+        imgView.layer.borderWidth = 1
+        imgView.layer.borderColor = UIColor.quaternaryLabel.cgColor
         imgView.clipsToBounds = true
         return imgView
     }()
@@ -40,25 +40,34 @@ public final class AppMinimumCVCell: UICollectionViewCell {
         let label = UILabel()
         label.numberOfLines = 2
         label.sizeToFit()
-        label.font = .boldSystemFont(ofSize: UIFont.labelFontSize)
-//        label.setContentHuggingPriority(
-//            .defaultHigh,
-//            for: .vertical
-//        )
+        label.font = .systemFont(
+            ofSize: UIFont.labelFontSize,
+            weight: .light
+        )
         return label
     }()
     
     private let descriptionLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 1
-        label.font = .systemFont(ofSize: UIFont.smallSystemFontSize)
+        label.font = .systemFont(
+            ofSize: 14,
+            weight: .light
+        )
         label.textColor = .gray
         return label
     }()
     
     private let downloadBtn: UIButton = {
         var config = UIButton.Configuration.bordered()
-        config.title = "받기"
+        var attributeContainer = AttributeContainer()
+        attributeContainer.font = UIFont.boldSystemFont(
+            ofSize: UIFont.labelFontSize
+        )
+        config.attributedTitle = .init(
+            "받기",
+            attributes: attributeContainer
+        )
         config.cornerStyle = .capsule
         let button = UIButton(configuration: config)
         return button
@@ -70,6 +79,11 @@ public final class AppMinimumCVCell: UICollectionViewCell {
         return view
     }()
     
+    public convenience init(hasDivider: Bool) {
+        self.init()
+        dividerView.isHidden = !hasDivider
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureUI()
@@ -79,8 +93,7 @@ public final class AppMinimumCVCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public override func prepareForReuse() {
-        super.prepareForReuse()
+    public func prepareForReuse() {
         appImgView.image = nil
         [titleLabel, descriptionLabel]
             .forEach {
@@ -97,17 +110,16 @@ public final class AppMinimumCVCell: UICollectionViewCell {
     private func configureUI() {
         [appImgView, stackView, downloadBtn, dividerView]
             .forEach {
-                contentView.addSubview($0)
+                addSubview($0)
                 $0.translatesAutoresizingMaskIntoConstraints = false
             }
         
         NSLayoutConstraint.activate([
             appImgView.leadingAnchor.constraint(
-                equalTo: contentView.leadingAnchor,
-                constant: 5
+                equalTo: leadingAnchor
             ),
             appImgView.centerYAnchor.constraint(
-                equalTo: contentView.centerYAnchor
+                equalTo: centerYAnchor
             ),
             appImgView.widthAnchor.constraint(
                 equalToConstant: 60
@@ -117,14 +129,13 @@ public final class AppMinimumCVCell: UICollectionViewCell {
             ),
             
             downloadBtn.trailingAnchor.constraint(
-                equalTo: contentView.trailingAnchor,
-                constant: -5
+                equalTo: trailingAnchor
             ),
             downloadBtn.centerYAnchor.constraint(
-                equalTo: contentView.centerYAnchor
+                equalTo: centerYAnchor
             ),
             downloadBtn.widthAnchor.constraint(
-                equalToConstant: 70
+                equalToConstant: 80
             ),
             
             stackView.leadingAnchor.constraint(
@@ -132,7 +143,7 @@ public final class AppMinimumCVCell: UICollectionViewCell {
                 constant: 10
             ),
             stackView.centerYAnchor.constraint(
-                equalTo: contentView.centerYAnchor
+                equalTo: centerYAnchor
             ),
             stackView.trailingAnchor.constraint(
                 equalTo: downloadBtn.leadingAnchor,
