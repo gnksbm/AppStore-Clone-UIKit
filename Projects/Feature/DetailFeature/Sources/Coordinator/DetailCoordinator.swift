@@ -13,6 +13,13 @@ public final class DetailCoordinator: Coordinator {
     }
     
     public func start() {
+        let detailViewController = DetailViewController(
+            viewModel: DetailViewModel()
+        )
+        navigationController.pushViewController(
+            detailViewController,
+            animated: true
+        )
     }
     
     public func createDetailViewController() -> UINavigationController {
