@@ -9,7 +9,7 @@ import ProjectDescription
 
 public extension Array<TargetDependency> {
     enum Feature: CaseIterable {
-        case today, game, application, arcade, search
+        case today, game, application, arcade, search, detail
         
         public var dependency: TargetDependency {
             switch self {
@@ -23,6 +23,8 @@ public extension Array<TargetDependency> {
                 return featureModule(name: "ArcadeFeature")
             case .search:
                 return featureModule(name: "SearchFeature")
+            case .detail:
+                return featureModule(name: "DetailFeature")
             }
         }
         
