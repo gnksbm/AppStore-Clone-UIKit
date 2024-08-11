@@ -10,15 +10,18 @@ import Foundation
 
 public struct SearchAppMinResponse: Hashable {
     public let iconUrl: URL?
+    public let appID: Int
     public let appName: String
     public let appDescription: String
     
     public init(
         iconUrl: URL?,
+        appID: Int,
         appName: String,
         appDescription: String
     ) {
         self.iconUrl = iconUrl
+        self.appID = appID
         self.appName = appName
         self.appDescription = appDescription
     }

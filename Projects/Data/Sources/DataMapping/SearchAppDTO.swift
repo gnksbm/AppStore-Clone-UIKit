@@ -19,7 +19,8 @@ extension SearchAppDTO {
     func toMinimun() -> [SearchAppMinResponse] {
         results.map { dto in
             .init(
-                iconUrl: dto.artworkUrl60,
+                iconUrl: dto.artworkUrl60, 
+                appID: dto.trackId,
                 appName: dto.trackName,
                 appDescription: dto.description
             )
@@ -31,6 +32,7 @@ extension SearchAppDTO {
             .init(
                 minResponse: .init(
                     iconUrl: dto.artworkUrl60,
+                    appID: dto.trackId,
                     appName: dto.trackName,
                     appDescription: dto.description
                 ),
