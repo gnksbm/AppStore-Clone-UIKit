@@ -32,11 +32,11 @@ public final class SearchViewModel: ViewModel {
             .disposed(by: disposeBag)
         
         input.searchBarText
+            .distinctUntilChanged()
             .debounce(
                 .milliseconds(500),
                 scheduler: MainScheduler.instance
             )
-            .distinctUntilChanged()
             .withUnretained(self)
             .subscribe(
                 onNext: { viewModel, text in

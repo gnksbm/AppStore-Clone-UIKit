@@ -91,7 +91,11 @@ public final class AppMidianCVCell: UICollectionViewCell {
     }
     
     public func updateUI(response: SearchAppMidResponse) {
-        appMinimumView.updateUI(response: response.minResponse)
+        appMinimumView.updateUI(
+            iconUrl: response.minResponse.iconUrl,
+            appName: response.minResponse.appName,
+            appDescription: response.minResponse.appDescription
+        )
         starRatingView.drawStar(
             rating: response.averageRating,
             ratingCount: response.ratingCount

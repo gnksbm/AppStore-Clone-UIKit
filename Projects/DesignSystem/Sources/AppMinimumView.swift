@@ -9,7 +9,6 @@
 import UIKit
 
 import Core
-import Domain
 
 import RxSwift
 
@@ -101,10 +100,14 @@ public final class AppMinimumView: UIView {
             }
     }
     
-    public func updateUI(response: SearchAppMinResponse) {
-        appImgView.loadImage(url: response.iconUrl)
-        titleLabel.text = response.appName
-        descriptionLabel.text = response.appDescription
+    public func updateUI(
+        iconUrl: URL?,
+        appName: String,
+        appDescription: String
+    ) {
+        appImgView.loadImage(url: iconUrl)
+        titleLabel.text = appName
+        descriptionLabel.text = appDescription
     }
     
     private func configureUI() {

@@ -34,7 +34,11 @@ public final class AppMinimumCVCell: UICollectionViewCell {
     }
     
     public func updateUI(response: SearchAppMinResponse) {
-        appMinimumView.updateUI(response: response)
+        appMinimumView.updateUI(
+            iconUrl: response.iconUrl,
+            appName: response.appName,
+            appDescription: response.appDescription
+        )
     }
     
     private func configureUI() {
