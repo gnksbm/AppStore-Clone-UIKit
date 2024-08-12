@@ -1,4 +1,5 @@
 import UIKit
+import FeatureDependency
 
 import DesignSystem
 import Domain
@@ -14,6 +15,7 @@ final class SearchViewController: BaseViewController {
     private var viewModel: SearchViewModel
     
     private var suggestionTapEvent = PublishSubject<String>()
+    private var appItemTapEvent = PublishSubject<Int>()
     private var disposeBag = DisposeBag()
     
     private lazy var collectionView = UICollectionView(
@@ -116,6 +118,10 @@ final class SearchViewController: BaseViewController {
                         .skip(1)
                         .asObservable(),
                     suggestionTapEvent
+                ),
+                itemTapEvent: Observable.merge(
+                    appItemTapEvent,
+                    searchedVC.itemTapEvent
                 )
             )
         )
@@ -196,21 +202,21 @@ extension SearchViewController {
     
     private func makeDiscoveryRegistration(
     ) -> UICollectionView.CellRegistration<DiscoveryCell, SearchItem> {
-        .init { cell, _, item in
+        .init { [weak self] cell, _, item in
+            guard let self else { return }
             switch item {
             case .discovery(let suggestion):
                 cell.updateUI(btnTitle: suggestion)
                 cell.btnTapEvent
-                    .withUnretained(self)
                     .subscribe(
-                        onNext: { vc, text in
-                            vc.suggestionTapEvent.onNext(text)
-                            vc.searchController.searchBar.text = text
-                            vc.searchController.searchBar.becomeFirstResponder()
+                        onNext: { text in
+                            self.suggestionTapEvent.onNext(text)
+                            self.searchController.searchBar.text = text
+                            self.searchController.searchBar.becomeFirstResponder()
                         }
                     )
                     .disposed(by: cell.disposeBag)
-            case .recommended:
+            case .recommended(let response):
                 break
             }
         }
@@ -218,12 +224,19 @@ extension SearchViewController {
     
     private func makeRecommendRegistration(
     ) -> UICollectionView.CellRegistration<AppMinimumCVCell, SearchItem> {
-        .init { cell, _, item in
+        .init { [weak self] cell, _, item in
+            guard let self else { return }
             switch item {
             case .discovery:
                 break
             case .recommended(let response):
                 cell.updateUI(response: response)
+                let tapGesture = UITapGestureRecognizer()
+                cell.addGestureRecognizer(tapGesture)
+                tapGesture.rx.event
+                    .map { _ in response.appID }
+                    .bind(to: appItemTapEvent)
+                    .disposed(by: cell.disposeBag)
             }
         }
     }
@@ -362,18 +375,3 @@ extension SearchViewController {
         case recommended(recommendedApp: SearchAppMinResponse)
     }
 }
-
-#if DEBUG
-import SwiftUI
-import FeatureDependency
-
-struct SearchViewController_Preview: PreviewProvider {
-    static var previews: some View {
-        UIKitPreview {
-            SearchViewController(
-                viewModel: SearchViewModel()
-            )
-        }
-    }
-}
-#endif

@@ -89,18 +89,3 @@ final class DiscoveryCell: UICollectionViewCell {
         ])
     }
 }
-
-#if DEBUG
-import SwiftUI
-import FeatureDependency
-
-struct DiscoveryCell_Preview: PreviewProvider {
-    static var previews: some View {
-        UIKitPreview {
-            SearchViewController(
-                viewModel: SearchViewModel()
-            )
-        }
-    }
-}
-#endif

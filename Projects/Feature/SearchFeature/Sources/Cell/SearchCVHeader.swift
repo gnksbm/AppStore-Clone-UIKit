@@ -52,18 +52,3 @@ final class SearchCVHeader: UICollectionReusableView {
         ])
     }
 }
-
-#if DEBUG
-import SwiftUI
-import FeatureDependency
-
-struct SearchCVHeader_Preview: PreviewProvider {
-    static var previews: some View {
-        UIKitPreview {
-            SearchViewController(
-                viewModel: SearchViewModel()
-            )
-        }
-    }
-}
-#endif

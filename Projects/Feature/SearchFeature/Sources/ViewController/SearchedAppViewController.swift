@@ -12,8 +12,12 @@ import DesignSystem
 import Domain
 import FeatureDependency
 
+import RxSwift
+
 final class SearchedAppViewController: BaseViewController {
     private var dataSource: DataSource!
+    
+    let itemTapEvent = PublishSubject<Int>()
     
     private lazy var collectionView: UICollectionView = {
         let collectionView =  UICollectionView(
@@ -67,8 +71,15 @@ final class SearchedAppViewController: BaseViewController {
     private func makeCellRegistration(
     ) -> UICollectionView.CellRegistration
     <AppMidianCVCell, SearchAppMidResponse> {
-        .init { cell, _, response in
+        .init { [weak self] cell, _, response in
+            guard let self else { return }
             cell.updateUI(response: response)
+            let tapGesture = UITapGestureRecognizer()
+            cell.addGestureRecognizer(tapGesture)
+            tapGesture.rx.event
+                .map { _ in response.minResponse.appID }
+                .bind(to: itemTapEvent)
+                .disposed(by: cell.disposeBag)
         }
     }
     

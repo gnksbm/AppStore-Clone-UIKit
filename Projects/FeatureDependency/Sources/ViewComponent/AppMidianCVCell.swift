@@ -14,7 +14,7 @@ import Domain
 import RxSwift
 
 public final class AppMidianCVCell: UICollectionViewCell {
-    let disposeBag = DisposeBag()
+    public var disposeBag = DisposeBag()
     
     private let appMinimumView = AppMinimumView(hasDivider: false)
     
@@ -81,6 +81,7 @@ public final class AppMidianCVCell: UICollectionViewCell {
     
     public override func prepareForReuse() {
         super.prepareForReuse()
+        disposeBag = DisposeBag()
         appMinimumView.prepareForReuse()
         starRatingView.prepareForReuse()
         devInfoView.updateText(text: nil)
