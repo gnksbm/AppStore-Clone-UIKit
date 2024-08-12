@@ -8,11 +8,12 @@ import RxSwift
 import RxCocoa
 
 public final class SearchViewModel: ViewModel {
-    @Injected(SearchAppUseCase.self)
-    private var useCase: SearchAppUseCase
+    @Injected private var useCase: SearchAppUseCase
+    private var coordinator: SearchCoordinator
     private var disposeBag = DisposeBag()
     
-    public init() {
+    public init(coordinator: SearchCoordinator) {
+        self.coordinator = coordinator
     }
     
     public func transform(input: Input) -> Output {
@@ -22,39 +23,43 @@ public final class SearchViewModel: ViewModel {
             searchedApp: .init()
         )
         
-        input.viewWillAppear
-            .withUnretained(self)
-            .subscribe(
-                onNext: { viewModel, _ in
-                    viewModel.useCase.fetchRecommendedApp()
-                }
-            )
-            .disposed(by: disposeBag)
-        
-        input.searchBarText
-            .distinctUntilChanged()
-            .debounce(
-                .milliseconds(500),
-                scheduler: MainScheduler.instance
-            )
-            .withUnretained(self)
-            .subscribe(
-                onNext: { viewModel, text in
-                    guard !text.isEmpty else {
-                        output.searchedApp.onNext([])
-                        return
+        disposeBag.insert {
+            input.viewWillAppear
+                .withUnretained(self)
+                .subscribe(
+                    onNext: { viewModel, _ in
+                        viewModel.useCase.fetchRecommendedApp()
                     }
-                    viewModel.useCase.searchApp(
-                        query: .init(term: text)
-                    )
+                )
+            
+            input.searchBarText
+                .distinctUntilChanged()
+                .debounce(
+                    .milliseconds(500),
+                    scheduler: MainScheduler.instance
+                )
+                .withUnretained(self)
+                .subscribe(
+                    onNext: { viewModel, text in
+                        guard !text.isEmpty else {
+                            output.searchedApp.onNext([])
+                            return
+                        }
+                        viewModel.useCase.searchApp(
+                            query: .init(term: text)
+                        )
+                    }
+                )
+            
+            input.itemTapEvent
+                .withUnretained(self)
+                .bind { vm, id in
+                    vm.coordinator.startDetailFlow(id: id)
                 }
-            )
-            .disposed(by: disposeBag)
-        
-        useCase.searchedApp
-            .bind(to: output.searchedApp)
-            .disposed(by: disposeBag)
-        
+            
+            useCase.searchedApp
+                .bind(to: output.searchedApp)
+        }
         return output
     }
 }
@@ -63,6 +68,7 @@ extension SearchViewModel {
     public struct Input {
         let viewWillAppear: Observable<Void>
         let searchBarText: Observable<String>
+        let itemTapEvent: Observable<Int>
     }
     
     public struct Output {
@@ -71,17 +77,3 @@ extension SearchViewModel {
         let searchedApp: PublishSubject<[SearchAppMidResponse]>
     }
 }
-
-#if DEBUG
-import SwiftUI
-
-struct SearchViewModel_Preview: PreviewProvider {
-    static var previews: some View {
-        UIKitPreview {
-            SearchViewController(
-                viewModel: SearchViewModel()
-            )
-        }
-    }
-}
-#endif

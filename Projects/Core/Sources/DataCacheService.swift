@@ -14,13 +14,13 @@ public final class DataCacheService {
     
     private init() { }
     
-    public func fetchData(url: URL?) -> Data? {
+    public func fetchData(url: URL?) async -> Data? {
         guard let url else { return nil }
         if let cachedData = getCachedData(url: url) {
             return cachedData
         }
         do {
-            let data = try Data(contentsOf: url)
+            let (data, _) = try await URLSession.shared.data(from: url)
             cache.setObject(data as NSData, forKey: url as NSURL)
             return data
         } catch {

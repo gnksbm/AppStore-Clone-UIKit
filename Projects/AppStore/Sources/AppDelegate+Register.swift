@@ -27,5 +27,13 @@ extension AppDelegate {
                 randomWordRepository: randomWordRepository
             )
         )
+        DIContainer.register(
+            type: NetworkService.self,
+            DefaultNetworkService()
+        )
+        DIContainer.register(
+            type: AppDetailRepository.self,
+            DefaultAppDetailRepository()
+        )
     }
 }

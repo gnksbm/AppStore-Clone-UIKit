@@ -8,8 +8,7 @@ import RxSwift
 import RxCocoa
 
 public final class TodayViewModel: ViewModel {
-    @Injected(TodayUseCase.self)
-    private var useCase: TodayUseCase
+    @Injected private var useCase: TodayUseCase
     
     private var disposeBag = DisposeBag()
     
