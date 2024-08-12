@@ -18,13 +18,16 @@ public final class TabBarCoordinator: Coordinator {
     public var parentCoordinator: Coordinator?
     public var childCoordinators: [Coordinator] = []
     public let navigationController: UINavigationController
+    public let coordinatorProvider: CoordinatorProvider
     
     public init(
         parentCoordinator: Coordinator? = nil,
-        navigationController: UINavigationController
+        navigationController: UINavigationController,
+        coordinatorProvider: CoordinatorProvider
     ) {
         self.parentCoordinator = parentCoordinator
         self.navigationController = navigationController
+        self.coordinatorProvider = coordinatorProvider
     }
     
     public func start() {
@@ -74,7 +77,8 @@ public final class TabBarCoordinator: Coordinator {
             )
         case .search:
             childCoordinator = SearchCoordinator(
-                navigationController: navigationController
+                navigationController: navigationController,
+                coordinatorProvider: coordinatorProvider
             )
         }
         childCoordinators.append(childCoordinator)

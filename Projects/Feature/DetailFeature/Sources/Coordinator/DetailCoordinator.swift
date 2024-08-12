@@ -1,20 +1,29 @@
 import UIKit
 
+import Domain
 import FeatureDependency
 
-public final class DetailCoordinator: Coordinator {
-    public var parentCoordinator: Coordinator?
-    
-    public var childCoordinators: [Coordinator] = []
+public final class DefaultDetailCoordinator: DetailCoordinator {
+    private let appID: Int
     public var navigationController: UINavigationController
     
-    public init(navigationController: UINavigationController) {
+    public var parentCoordinator: Coordinator?
+    public var childCoordinators: [Coordinator] = []
+    
+    public init(
+        appID: Int,
+        navigationController: UINavigationController
+    ) {
+        self.appID = appID
         self.navigationController = navigationController
     }
     
     public func start() {
         let detailViewController = DetailViewController(
-            viewModel: DetailViewModel()
+            viewModel: DetailViewModel(
+                appID: appID,
+                useCase: DefaultDetailUseCase()
+            )
         )
         navigationController.pushViewController(
             detailViewController,
@@ -24,9 +33,13 @@ public final class DetailCoordinator: Coordinator {
     
     public func createDetailViewController() -> UINavigationController {
         let detailViewController = DetailViewController(
-            viewModel: DetailViewModel()
+            viewModel: DetailViewModel(
+                appID: appID,
+                useCase: DefaultDetailUseCase()
+            )
         )
-        navigationController = UINavigationController(rootViewController: detailViewController)
+        navigationController = 
+        UINavigationController(rootViewController: detailViewController)
         return navigationController
     }
 }
